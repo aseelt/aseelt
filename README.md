@@ -14,3 +14,11 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+Hello!
+
+I'm starting a course at TechElevator in Pittsburgh. I'm switching careers and am looking forward to my next challenge.
+
+More to come soon!
+
+-aseelt
