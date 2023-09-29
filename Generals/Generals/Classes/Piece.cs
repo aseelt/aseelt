@@ -23,12 +23,21 @@ namespace Generals.Classes
         // since it's derived from a dictionary field, simple get works
         // get just returns the dictionary acces
         // no need for set or backing variable
-        public string Name 
-        { 
-            get 
-            { 
-                return RankToName[Rank]; 
-            } 
+        public string Name
+        {
+            get
+            {
+                return RankToName[Rank];
+            }
+        }
+
+        // need a short name to display in the grid
+        public string DisplayName
+        {
+            get
+            {
+                return RankToDisplayName[Rank];
+            }
         }
 
         // like Name, it's derived based on the Rank
@@ -47,34 +56,33 @@ namespace Generals.Classes
                 {
                     return 1;
                 }
-                
+
             }
-        } 
+        }
 
         // will need to be public so the board can calculate combat
         // will need to change when peices die
         // initial value is true, all pieces are created alive
-        public bool isAlive { get; set; } = true;
+        // private set, can't edit it directly, public otherwise since other classes need the info
+        public bool isAlive { get; private set; } = true;
 
         // will need to be public so the board knows if the piece is on the board or not
         // will need to change when peices die
         // initial value is false, all pieces need to be placed
         // then change to true if the piece has been placed
         // if killed, piece needs to be removed from board, ineligible to be moved
+        // private, can't edit it directly, public otherwise since other classes need the info
         //TODO need list of eligible alive pieces
-        public bool isOnBoard { get; set; } = false;
+        public bool isOnBoard { get; private set; } = false;
 
         // owning army property will be in the Army class
 
         // will need to be public so the board can calculate moves and combat
         // does it need to live here or on the board class?
         // will need to be settable because it'll move
-        // no need to put default values, player will place them
-        //TODO have to figure out how positions are handled. let's come back to it
-        public string Position { get; set; } = "";
-
-        // this is just the piece class
-        // need a class for the overall army
+        // private set, can't edit it directly, public otherwise since other classes need the info
+        // no need to put default values, player will place them 
+        public string Position { get; private set; } = "    ";
 
         // constructors
         // pieces must be built with these
@@ -84,18 +92,19 @@ namespace Generals.Classes
         // so no user can input values and make a custom deck
         public Piece(int rank)
         {
-            if(rank >= -2 && rank <= 32) // only create if accurate value supplied for ranks 5* to flag
+            if (rank >= -2 && rank <= 32) // only create if accurate value supplied for ranks 5* to flag
             {
                 Rank = rank;
-            }            
+            }
         }
 
         // methods
+
         // move in all directions
         // die
         //TODO is attack here or in the board class?
         //TODO is board position here or on the board?
-        
+
         // move method is public, we'll need to access it outside
         // return true to make sure it works
         // takes input from board class, updates the position
@@ -122,10 +131,29 @@ namespace Generals.Classes
             { 12, "***** General" }
         };
 
+        public Dictionary<int, string> RankToDisplayName = new Dictionary<int, string>()
+        {
+            { -2, " Flag! " },
+            { -1, "  Spy  " },
+            { 0, "  Pte  " },
+            { 1, " Sarge " },
+            { 2, " 2.Lie " },
+            { 3, " 1.Lie " },
+            { 4, "  Cap  " },
+            { 5, " Major " },
+            { 6, " L.Col " },
+            { 7, "  Col  " },
+            { 8, "   *   " },
+            { 9, "  * *  " },
+            { 10, "  ***  " },
+            { 11, " ** ** " },
+            { 12, " ***** " }
+        };
+
         // need a ToString override so I know what I'm working with
         public override string ToString()
         {
-            return $"{Name}";
+            return $"{DisplayName}";
         }
 
     }

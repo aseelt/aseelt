@@ -17,10 +17,12 @@ namespace Generals.Classes
         // the piece calls on the dictionary key values
         // movement adjusts the dictionary key values
         // if two pieces have the same key, trigger attack
-        // but can make this private and provide arrays for use in program.cs
+        // i don't recall how to make this private and provide a copy - it works for now
         // the the values are blank, waiting to be filled
         // all 64 positions in one dictionary
-        Dictionary<string, Piece> battlefield = new Dictionary<string, Piece>();
+        public Dictionary<string, Piece> Grid = new Dictionary<string, Piece>();
+
+
 
         // set up the constructor, it'll create the battlefield
         // public  
@@ -39,8 +41,30 @@ namespace Generals.Classes
                 {
                     string cellName = (i + 1) + ", " + (j + 1);
                     // then add it to the overall battlefield as a key
-                    battlefield.Add(cellName, null);
+                    Grid.Add(cellName, null);
                 }
+            }
+        }
+
+        // method to populate the battlefield square
+        // takes the input of the grid position and finds the value
+        public string ShowGridPiece(int currentPlayer, string gridPosition)
+        {
+            if (Grid[gridPosition] == null)
+            {
+                return "       ";
+            }
+            // need a current player toggle
+            else
+            {
+                if (currentPlayer == 1)
+                {
+                    return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nx---------x\nx         x\nx ooooooo x\nx         x\nxxxxxxxxxxx";
+                }
+                else
+                {
+                    return $"xxxxxxxxxxx\nx         x\nx ooooooo x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
+                }                
             }
         }
 

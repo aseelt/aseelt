@@ -16,12 +16,13 @@ namespace Generals.Classes
         // can't change it after creation
         public string MyArmy { get; }
 
+
         // army list property holds a list of the pieces
         // needs to be a list, I will be pushing/pulling off it out of order
         // it should be in here
         // this is my list
         // give a copy to use
-        private List<Piece> pieces { get; set; } = new List<Piece>();
+        public List<Piece> pieces { get; set; } = new List<Piece>();
 
         // constructor
         public Army(string name)

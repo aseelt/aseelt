@@ -1,4 +1,5 @@
 ﻿using Generals.Classes;
+using System.Collections.Immutable;
 
 namespace Generals
 {
@@ -22,7 +23,8 @@ namespace Generals
             Console.WriteLine("\nPlayer One, enter your army's name: ");
             string playerOne = Console.ReadLine();
 
-            //TODO fix and need to add error checking
+            //TODO fix and need to add error checking 
+            //TODO error checking make sure army starts with a different character
             Console.WriteLine("\nPlayer Two, enter your army's name: ");
             string playerTwo = Console.ReadLine();
 
@@ -34,11 +36,20 @@ namespace Generals
             Army firstArmy = new Army(playerOne);
             Army secondArmy = new Army(playerTwo);
             Battlefield warzone = new Battlefield(field);
-            
 
-            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin on {field}!");
+            // assign a piece to a location
+            warzone.Grid["1, 1"] = firstArmy.pieces[0];
 
-            
+            // show the current player's pieces
+            //TODO figure out how to assign player 1 to 1 here, so you have a toggle
+            // probably a while loop
+            int currentPlayer = 2;
+
+
+            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin on {field}!\n");
+
+            // show the battlefield
+            Console.WriteLine($"{warzone.ShowGridPiece(2,"1, 1")}");
         }
     }
 }
