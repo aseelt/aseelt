@@ -26,12 +26,19 @@ namespace Generals
             Console.WriteLine("\nPlayer Two, enter your army's name: ");
             string playerTwo = Console.ReadLine();
 
-            // create the armies
+            //TODO fix and need to add error checking
+            Console.WriteLine("\nWhere are your armies meeting? ");
+            string field = Console.ReadLine();
+
+            // create the armies and battlefield
             Army firstArmy = new Army(playerOne);
             Army secondArmy = new Army(playerTwo);
+            Battlefield warzone = new Battlefield(field);
+            
 
-            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin!");
+            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin on {field}!");
 
+            
         }
     }
 }
