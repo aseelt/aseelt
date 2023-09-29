@@ -56,11 +56,21 @@ namespace Generals.Classes
         // initial value is true, all pieces are created alive
         public bool isAlive { get; set; } = true;
 
+        // will need to be public so the board knows if the piece is on the board or not
+        // will need to change when peices die
+        // initial value is false, all pieces need to be placed
+        // then change to true if the piece has been placed
+        // if killed, piece needs to be removed from board, ineligible to be moved
+        //TODO need list of eligible alive pieces
+        public bool isOnBoard { get; set; } = false;
+
+        // owning army property will be in the Army class
+
         // will need to be public so the board can calculate moves and combat
         // does it need to live here or on the board class?
         // will need to be settable because it'll move
         // no need to put default values, player will place them
-        //TODO position will need to be a dictionary, right? let's come back to it
+        //TODO have to figure out how positions are handled. let's come back to it
         public string Position { get; set; } = "";
 
         // this is just the piece class
@@ -80,10 +90,20 @@ namespace Generals.Classes
             }            
         }
 
+        // methods
+        // move in all directions
+        // die
+        //TODO is attack here or in the board class?
+        //TODO is board position here or on the board?
+        
+        // move method is public, we'll need to access it outside
+        // return true to make sure it works
+        // takes input from board class, updates the position
+
         // create dictionary field of Rank providing Name
-        // private, outside doesn't need it
+        // public static, the army class needs it. Though... how do I avoid static?
         //TODO do I need a critical value for the flag? A child class for it? or should I add that to a rules class
-        private Dictionary<int, string> RankToName = new Dictionary<int, string>()
+        public static Dictionary<int, string> RankToName = new Dictionary<int, string>()
         {
             { -2, "Flag" },
             { -1, "Spy" },
@@ -101,6 +121,12 @@ namespace Generals.Classes
             { 11, "**** General" },
             { 12, "***** General" }
         };
-        
+
+        // need a ToString override so I know what I'm working with
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
+
     }
 }
