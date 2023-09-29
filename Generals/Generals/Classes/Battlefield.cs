@@ -31,7 +31,7 @@ namespace Generals.Classes
         {
             // get the name set up
             BattlefieldName = name;
-                        
+
             for (int i = 0; i < 8; i++)
             {
                 // for each position in the xAxis array
@@ -39,34 +39,34 @@ namespace Generals.Classes
                 // label for the y axis 
                 for (int j = 0; j < 8; j++)
                 {
-                    string cellName = (i + 1) + ", " + (j + 1);
+                    string cellNamePlayer = (i + 1) + "," + (j + 1) + name;
+
                     // then add it to the overall battlefield as a key
-                    Grid.Add(cellName, null);
+                    Grid.Add(cellNamePlayer, new Piece(-3));
                 }
             }
         }
 
         // method to populate the battlefield square
         // takes the input of the grid position and finds the value
-        public string ShowGridPiece(int currentPlayer, string gridPosition)
-        {
-            if (Grid[gridPosition] == null)
-            {
-                return "       ";
-            }
-            // need a current player toggle
-            else
-            {
-                if (currentPlayer == 1)
-                {
-                    return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nx---------x\nx         x\nx ooooooo x\nx         x\nxxxxxxxxxxx";
-                }
-                else
-                {
-                    return $"xxxxxxxxxxx\nx         x\nx ooooooo x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
-                }                
-            }
-        }
+        //public string ShowGridPiece(int currentPlayer, string gridPosition)
+        //{
+
+
+        //    if (currentPlayer == 1)
+        //    {
+        //        return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition + BattlefieldName].DisplayName} x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
+        //    }
+        //    else
+        //    {
+        //        return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
+        //    }
+
+        //    if (Grid[gridPosition] == null)
+        //    {
+        //        return "       ";
+        //    }
+        //}
 
         // need a ToString override so I know what I'm working with
         public override string ToString()

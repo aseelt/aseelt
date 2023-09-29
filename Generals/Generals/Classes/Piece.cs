@@ -92,7 +92,7 @@ namespace Generals.Classes
         // so no user can input values and make a custom deck
         public Piece(int rank)
         {
-            if (rank >= -2 && rank <= 32) // only create if accurate value supplied for ranks 5* to flag
+            if (rank >= -3 && rank <= 12) // only create if accurate value supplied for ranks 5* to flag
             {
                 Rank = rank;
             }
@@ -114,6 +114,7 @@ namespace Generals.Classes
         //TODO do I need a critical value for the flag? A child class for it? or should I add that to a rules class
         public static Dictionary<int, string> RankToName = new Dictionary<int, string>()
         {
+            { -3, "Blank" },
             { -2, "Flag" },
             { -1, "Spy" },
             { 0, "Private" },
@@ -133,6 +134,7 @@ namespace Generals.Classes
 
         public Dictionary<int, string> RankToDisplayName = new Dictionary<int, string>()
         {
+            { -3, "       " },
             { -2, " Flag! " },
             { -1, "  Spy  " },
             { 0, "  Pte  " },
