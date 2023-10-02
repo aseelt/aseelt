@@ -1,5 +1,6 @@
 ﻿using Generals.Classes;
 using System.Collections.Immutable;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 
 namespace Generals
@@ -34,40 +35,44 @@ namespace Generals
             string field = "a"; // Console.ReadLine();
 
             // create the armies and battlefield
-            Army firstArmy = new Army(playerOne);
-            Army secondArmy = new Army(playerTwo);
+            // this can be inside the battlefield class
+            //Army firstArmy = new Army(playerOne);
+            //Army secondArmy = new Army(playerTwo);
 
             // each player gets their own battlefield
-            Battlefield playerOneBattlefield = new Battlefield(playerOne);
-            Battlefield playerTwoBattlefield = new Battlefield(playerTwo);
+            Battlefield playerOneBattlefield = new Battlefield(playerOne, 1);
+            Battlefield playerTwoBattlefield = new Battlefield(playerTwo, 2);
+            // array of battlefields
+            Battlefield[] battlefields = { playerOneBattlefield, playerTwoBattlefield };
 
             // assign a piece to a location
-            playerOneBattlefield.Grid["1,1x"] = firstArmy.pieces[0];
+            // just a placeholder
+            playerOneBattlefield.Grid["A1"] = playerOneBattlefield.MyArmy.pieces[0];
+            playerTwoBattlefield.Grid["A1"] = playerTwoBattlefield.MyArmy.pieces[13];
 
-            // show the current player's pieces
+            //TODO show the current player's pieces
             //TODO figure out how to assign player 1 to 1 here, so you have a toggle
             // probably a while loop
 
-            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin on {field}!\n");
+            Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin in {field}!\n");
 
             // show the battlefield
             // have to figure out how to hide the pieces for the other player
-
-            for (int j = 0; j < 8; j++)
-            {
-
-                Console.WriteLine($"X{1}xxxxxxx{j + 1}YX{2}xxxxxxx{j + 1}YX{3}xxxxxxx{j + 1}YX{4}xxxxxxx{j + 1}YX{5}xxxxxxx{j + 1}YX{6}xxxxxxx{j + 1}YX{7}xxxxxxx{j + 1}YX{8}xxxxxxx{j + 1}Y");
-                Console.WriteLine($"x         xx         xx         xx         xx         xx         xx         xx         x");
-                Console.WriteLine($"x {playerOneBattlefield.Grid[$"1,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"2,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"3,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"4,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"5,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"6,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"7,{j + 1}" + playerOne].DisplayName} xx {playerOneBattlefield.Grid[$"8,{j + 1}" + playerOne].DisplayName} x");
-                Console.WriteLine($"x         xx         xx         xx         xx         xx         xx         xx         x");
-                Console.WriteLine($"x---------xx---------xx---------xx---------xx---------xx---------xx---------xx---------x");
-                Console.WriteLine($"x         xx         xx         xx         xx         xx         xx         xx         x");
-                Console.WriteLine($"x {playerTwoBattlefield.Grid[$"1,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"2,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"3,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"4,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"5,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"6,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"7,{j + 1}" + playerTwo].DisplayName} xx {playerTwoBattlefield.Grid[$"8,{j + 1}" + playerTwo].DisplayName} x");
-                Console.WriteLine($"x         xx         xx         xx         xx         xx         xx         xx         x");
-                Console.WriteLine($"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-            }
+            // do a for loop and add it to an appended string. Duh. Avoids this hot mess
 
 
+            // let's just say we're on player 1
+            int playerToggle = 1;
+
+            
+            string topPlayerLine;
+            string bottomPlayerLine;
+            
+
+            string output = "";
+
+
+            Console.WriteLine(BattlefieldUI.BattlefieldDisplay(battlefields, playerToggle));
         }
     }
 }

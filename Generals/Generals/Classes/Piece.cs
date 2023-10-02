@@ -40,6 +40,24 @@ namespace Generals.Classes
             }
         }
 
+        // need a hidden name to display in the grid so the opposing player can't see it
+        // no set, it'll never change
+        public string NameHidden
+        {
+            get
+            {
+                if(Rank == -3)
+                {
+                    return "       ";
+                }
+                else
+                {
+                    return " oo oo ";
+                }
+            }
+        }
+
+
         // like Name, it's derived based on the Rank
         // like Name, it can't be changed
         // needs to be public, the board will need it to calculate combat
@@ -112,7 +130,7 @@ namespace Generals.Classes
         // create dictionary field of Rank providing Name
         // public static, the army class needs it. Though... how do I avoid static?
         //TODO do I need a critical value for the flag? A child class for it? or should I add that to a rules class
-        public static Dictionary<int, string> RankToName = new Dictionary<int, string>()
+        public Dictionary<int, string> RankToName = new Dictionary<int, string>()
         {
             { -3, "Blank" },
             { -2, "Flag" },

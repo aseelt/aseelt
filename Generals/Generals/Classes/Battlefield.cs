@@ -13,6 +13,10 @@ namespace Generals.Classes
         // battlefield name
         public string BattlefieldName { get; set; }
 
+        // need a player number
+        // don't need to change once set
+        public int PlayerNumber { get; }
+
         // need an x axis and a y axis
         // the piece calls on the dictionary key values
         // movement adjusts the dictionary key values
@@ -22,16 +26,21 @@ namespace Generals.Classes
         // all 64 positions in one dictionary
         public Dictionary<string, Piece> Grid = new Dictionary<string, Piece>();
 
+        // hold the army in here
+        // needs to be set, we'll be changing the army (alive/dead)
+        public Army MyArmy {get; set;}
 
 
         // set up the constructor, it'll create the battlefield
         // public  
         // 
-        public Battlefield(string name)
+        public Battlefield(string name, int playerNumber)
         {
             // get the name set up
             BattlefieldName = name;
-
+            PlayerNumber = playerNumber;
+            MyArmy = new Army(name);
+            
             for (int i = 0; i < 8; i++)
             {
                 // for each position in the xAxis array
@@ -39,34 +48,17 @@ namespace Generals.Classes
                 // label for the y axis 
                 for (int j = 0; j < 8; j++)
                 {
-                    string cellNamePlayer = (i + 1) + "," + (j + 1) + name;
+                    string cellNamePlayer = (xPositionToLetter[i]) + (j + 1);
 
                     // then add it to the overall battlefield as a key
                     Grid.Add(cellNamePlayer, new Piece(-3));
                 }
             }
         }
+             
 
-        // method to populate the battlefield square
-        // takes the input of the grid position and finds the value
-        //public string ShowGridPiece(int currentPlayer, string gridPosition)
-        //{
-
-
-        //    if (currentPlayer == 1)
-        //    {
-        //        return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition + BattlefieldName].DisplayName} x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
-        //    }
-        //    else
-        //    {
-        //        return $"xxxxxxxxxxx\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nx---------x\nx         x\nx {Grid[gridPosition].DisplayName} x\nx         x\nxxxxxxxxxxx";
-        //    }
-
-        //    if (Grid[gridPosition] == null)
-        //    {
-        //        return "       ";
-        //    }
-        //}
+        // array of positions to letters
+        string[] xPositionToLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
         // need a ToString override so I know what I'm working with
         public override string ToString()
