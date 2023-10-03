@@ -46,9 +46,14 @@ namespace Generals
             Battlefield[] battlefields = { playerOneBattlefield, playerTwoBattlefield };
 
             // assign a piece to a location
+            // calls the piece's array position, doesn't create a piece
             // just a placeholder
             playerOneBattlefield.Grid["A1"] = playerOneBattlefield.MyArmy.pieces[0];
             playerTwoBattlefield.Grid["A1"] = playerTwoBattlefield.MyArmy.pieces[13];
+            playerOneBattlefield.Grid["C3"] = playerOneBattlefield.MyArmy.pieces[12];
+            playerTwoBattlefield.Grid["H6"] = playerTwoBattlefield.MyArmy.pieces[14];
+            playerOneBattlefield.Grid["E7"] = playerOneBattlefield.MyArmy.pieces[5];
+            playerTwoBattlefield.Grid["E7"] = playerTwoBattlefield.MyArmy.pieces[6];
 
             //TODO show the current player's pieces
             //TODO figure out how to assign player 1 to 1 here, so you have a toggle
@@ -63,16 +68,11 @@ namespace Generals
 
             // let's just say we're on player 1
             int playerToggle = 1;
-
-            
-            string topPlayerLine;
-            string bottomPlayerLine;
-            
-
-            string output = "";
-
-
-            Console.WriteLine(BattlefieldUI.BattlefieldDisplay(battlefields, playerToggle));
+             
+            // instead use a method in battlefield to pull the piece out to be manipulated
+            // then in piece, manipulate the position per placement, movement, or attack
+            Console.WriteLine(playerOneBattlefield.BattlefieldDisplay(battlefields, playerToggle));
+            //PiecePlacement(battlefields, playerToggle, pieceNumber, positionDesired);
         }
     }
 }

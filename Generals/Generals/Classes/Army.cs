@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,20 @@ namespace Generals.Classes
                 Piece piece = new Piece(i);
                 pieces.Add(piece);
             }
+            // reorder the pieces so it makes more sense
+            Piece holding = new Piece(-3);
+            // flag first
+            holding = pieces[6];
+            pieces[6] = pieces[0];
+            pieces[0] = holding;
+            // spy1 2nd
+            holding = pieces[5];
+            pieces[5] = pieces[1];
+            pieces[1] = holding;
+            // spy2 3rd
+            holding = pieces[7];
+            pieces[7] = pieces[2];
+            pieces[2] = holding;
         }
 
         // need a ToString override so I know what I'm working with

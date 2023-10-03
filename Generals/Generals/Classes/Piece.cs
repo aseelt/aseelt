@@ -100,7 +100,7 @@ namespace Generals.Classes
         // will need to be settable because it'll move
         // private set, can't edit it directly, public otherwise since other classes need the info
         // no need to put default values, player will place them 
-        public string Position { get; private set; } = "    ";
+        public string Position { get; private set; } = "";
 
         // constructors
         // pieces must be built with these
@@ -117,6 +117,29 @@ namespace Generals.Classes
         }
 
         // methods
+        public static bool PiecePlacement(Battlefield[] battlefields, int playerToggle, int pieceNumber, string positionDesired)
+        {
+            // pull the current battlefield
+            Battlefield currentField = battlefields[playerToggle - 1];
+
+            // pull the current piece
+            Piece currentPiece = currentField.MyArmy.pieces[pieceNumber];
+
+            // get the piece position from the user in the format A1
+            // convert to 11 format
+            //TODO validation on input
+            string positionDesiredFirstLetter = positionDesired.Substring(0, 1);
+            // convert to integer
+            int positionDesiredFirstLetterAsNumber = positionDesired.IndexOf(positionDesiredFirstLetter);
+            int positionDesiredLastLetterAsNumber = int.Parse(positionDesired.Substring(1));
+
+            // reconstruct
+            string positionAsNumbers = $"{positionDesiredFirstLetterAsNumber}{positionDesiredLastLetterAsNumber}";
+
+            // assign it to the piece
+            currentField.MyArmy.pieces[pieceNumber].Position = positionAsNumbers;
+            return true;
+        }
 
         // move in all directions
         // die

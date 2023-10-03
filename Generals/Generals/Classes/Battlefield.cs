@@ -55,7 +55,97 @@ namespace Generals.Classes
                 }
             }
         }
-             
+
+        // helper method for the top and bottom player lines on the battlefield
+        private string DisplayChooserTop(Battlefield[] battlefields, int playerToggle, int h, int i)
+        {
+            string topPlayerLine;
+            if (playerToggle == 1)
+            {
+                // if player toggle is 1 get the first player's battlefield
+                // for the cell, plus the army's name (the battlefield name), pull the display name
+
+                topPlayerLine = $"x {battlefields[0] /* first player */.Grid[$"{xPositionToLetter[i]}{h + 1}" /* grid position gives that piece */].DisplayName /* what that piece is*/ } x";
+            }
+            else
+            {
+                // if it's not the active player, pull the cell, and the battlefield's name
+                // but pull the hidden name
+                topPlayerLine = $"x {battlefields[0].Grid[$"{xPositionToLetter[i]}{h + 1}"].NameHidden} x";
+            }
+            return topPlayerLine;
+        }
+        private string DisplayChooserBottom(Battlefield[] battlefields, int playerToggle, int h, int i)
+        {
+            string bottomPlayerLine;
+            if (playerToggle == 1)
+            {
+                bottomPlayerLine = $"x {battlefields[1].Grid[$"{xPositionToLetter[i]}{h + 1}"].NameHidden} x";
+
+            }
+            else
+            {
+                bottomPlayerLine = $"x {battlefields[1].Grid[$"{xPositionToLetter[i]}{h + 1}"].DisplayName} x";
+            }
+            return bottomPlayerLine;
+        }
+
+
+        // displays the battlefield for the current player
+        // hides the other player's pieces 
+        public string BattlefieldDisplay(Battlefield[] battlefields, int playerToggle)
+        {
+            string output = "";
+            for (int h = 0; h < 8; h++)
+            {
+
+                for (int i = 0; i < 8; i++)
+                {
+                    output += $"xX{xPositionToLetter[i]}xxxxxY{h + 1}x";
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += "x         x";
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += DisplayChooserTop(battlefields, playerToggle, h, i);
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += "x         x";
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += "x---------x";
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += "x         x";
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += DisplayChooserBottom(battlefields, playerToggle, h, i);
+                }
+                output += "\n";
+                for (int i = 0; i < 8; i++)
+                {
+                    output += "x         x";
+                }
+                output += "\n"; for (int i = 0; i < 8; i++)
+                {
+                    output += "xxxxxxxxxxx";
+                }
+                output += "\n";
+            }
+            return output;
+        }
 
         // array of positions to letters
         string[] xPositionToLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
