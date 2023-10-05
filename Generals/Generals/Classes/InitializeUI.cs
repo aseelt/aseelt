@@ -9,20 +9,25 @@ namespace Generals.Classes
     public class InitializeUI
     {
 
-        public void InitializeUIRuntime()
+        public bool InitializeUIRuntime()
         {
+            // make these separate methods
+            // this initialize should be the top level runtime
+            // you can factor out the asking to a general method that returns a string (readline) from the user
+            // the method parameter is the question you want to task
+
             // get the team name
             Console.WriteLine("Welcome to Generals");
             //TODO add more fluff later
 
             //TODO fix and need to add error checking
             Console.WriteLine("\nPlayer One, enter your army's name: ");
-            string playerOne = "x"; //Console.ReadLine();
+            string playerOne = "PlayerOneAseel"; //Console.ReadLine();
 
             //TODO fix and need to add error checking 
             //TODO error checking make sure army starts with a different character
             Console.WriteLine("\nPlayer Two, enter your army's name: ");
-            string playerTwo = "y"; //Console.ReadLine();
+            string playerTwo = "PlayerTwoBasil"; //Console.ReadLine();
 
             //TODO fix and need to add error checking
             Console.WriteLine("\nWhere are your armies meeting? ");
@@ -41,15 +46,17 @@ namespace Generals.Classes
             // calls the piece's array position, doesn't create a piece
             // just a placeholder
             // call the overall game, then the specific player's battlefield, then the location, then equals to the game, specific army, and then call the piece you want to assign
+            //TODO make this a method too: get the piece, assign it to a grid, change the piece's is placed to yes, update list of active pieces and pieces yet to be placed
             game.Battlefields[0].Grid["A1"] = game.Battlefields[0].Army[0];
+            game.Battlefields[1].Grid["A1"] = game.Battlefields[1].Army[5];
 
             // let's just say we're on player 1
             //TODO figure out how to assign player 1 to 1 here, so you have a toggle
-            int playerToggle = 2;
+            string playerToggle = playerOne;
 
             // instead use a method in battlefield to pull the piece out to be manipulated
             // then in piece, manipulate the position per placement, movement, or attack
-            //Console.WriteLine(playerOneBattlefield.BattlefieldDisplay(battlefields, playerToggle));
+            Console.WriteLine(game.BattlefieldDisplay(playerToggle));
             //PiecePlacement(battlefields, playerToggle, pieceNumber, positionDesired);
 
             bool piecePlacementChooser = true;
@@ -106,6 +113,8 @@ namespace Generals.Classes
                 //}
             } while (piecePlacementChooser);
             //Console.WriteLine(playerOneBattlefield.BattlefieldDisplay(battlefields, playerToggle));
+
+            return true;
         }
 
     }

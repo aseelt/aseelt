@@ -12,9 +12,9 @@ namespace Generals.Classes
         // holds the army and the grid reference
 
         // properties
-        // battlefield name
+        // battlefield name is who owns it, the player name
         // use this in a queue to manage the battlefield toggle
-        public string BattlefieldName { get; set; }
+        public string PlayerName { get; set; }
 
         // array of positions to letters reference
         //TODO decide if you want this public or private
@@ -43,7 +43,7 @@ namespace Generals.Classes
         public Battlefield(string name)
         {
             // get the name set up
-            BattlefieldName = name;
+            PlayerName = name;
 
             for (int i = 0; i < 8; i++)
             {
@@ -96,7 +96,7 @@ namespace Generals.Classes
         private string DisplayChooserTop(Battlefield[] battlefields, string playerToggle, int h, int i)
         {
             string topPlayerLine;
-            if (playerToggle == BattlefieldName)
+            if (playerToggle == PlayerName)
             {
                 // if player toggle is 1 get the first player's battlefield
                 // for the cell, plus the army's name (the battlefield name), pull the display name
@@ -114,7 +114,7 @@ namespace Generals.Classes
         private string DisplayChooserBottom(Battlefield[] battlefields, string playerToggle, int h, int i)
         {
             string bottomPlayerLine;
-            if (playerToggle == BattlefieldName)
+            if (playerToggle == PlayerName)
             {
                 bottomPlayerLine = $"x {battlefields[1].Grid[$"{xPositionToLetter[i]}{h + 1}"].NameHidden} x";
 
@@ -186,7 +186,7 @@ namespace Generals.Classes
         // need a ToString override so I know what I'm working with
         public override string ToString()
         {
-            return $"{BattlefieldName}";
+            return $"{PlayerName}";
         }
 
     }

@@ -9,18 +9,30 @@ namespace Generals.Classes
     public class Actions
     {
         // the array of battlefields lives here
+        public Battlefield[] Battlefields { get; set; } = new Battlefield[2];
+
         // what if it's a dictionary, then I can call the key instead of the array position
-        public Dictionary<string, Battlefield> Battlefields = new Dictionary<string, Battlefield>();
+        // i would love to but it's not working...
+        //public Dictionary<string, Battlefield> Battlefields = new Dictionary<string, Battlefield>();
+
+        // queue for the next player
+        // hold this information here, then toggle in the UI using a method below
+        //TODO queue
+        //public Queue<string> PlayerToggle = new Queue<string>();
 
 
         // methods
-        // create battlefields and add it to the array
-        public void CreateBattlefield(string nameOne, string nameTwo)
+        // create battlefields and add it to the dictionary with the keys
+        // add the players to the queue
+        public bool CreateBattlefield(string nameOne, string nameTwo)
         {
             Battlefield playerOne = new Battlefield(nameOne);
             Battlefield playerTwo = new Battlefield(nameTwo);
-            Battlefields[nameOne] = playerOne;
-            Battlefields[nameTwo] = playerTwo;            
+            Battlefields[0] = playerOne;
+            Battlefields[1] = playerTwo;
+            //PlayerToggle.Enqueue(nameOne);
+            //PlayerToggle.Enqueue(nameTwo);
+            return true;
         }
 
         // view the battlefield
@@ -28,7 +40,8 @@ namespace Generals.Classes
         private string DisplayChooserTop(string playerToggle, int h, int i)
         { 
             string topPlayerLine;
-            if (playerToggle == Battlefields[0].BattlefieldName)
+            if (playerToggle == Battlefields[0].PlayerName)
+            //if (PlayerToggle.Peek() == Battlefields[playerToggle].PlayerName)
             {
                 // if player toggle is 1 get the first player's battlefield
                 // for the cell, plus the army's name (the battlefield name), pull the display name
@@ -44,10 +57,11 @@ namespace Generals.Classes
             return topPlayerLine;
         }
         // has to be duplicated like this, it's slighlty different to cover the different combinations
+        // and it returns another string 
         private string DisplayChooserBottom(string playerToggle, int h, int i)
         {
             string bottomPlayerLine;
-            if (playerToggle == Battlefields[1].BattlefieldName)
+            if (playerToggle == Battlefields[0].PlayerName)
             {
                 bottomPlayerLine = $"x {Battlefields[1].Grid[$"{Battlefields[1].xPositionToLetter[i]}{h + 1}"].NameHidden} x";
 
