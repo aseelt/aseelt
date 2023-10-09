@@ -15,15 +15,16 @@ namespace Generals.Classes
         // rank should only be created, it can't be modified after creation
         // we'll need rank for combat, so leave get
         // rank needs to be public for the board to calculate combat
-        public int Rank { get; }
+        // but only return the rank on ask, don't want it to be peeked at
+        private int Rank { get; }
 
         // can derive name using a field
-        // needs to be private set. This class can set it, but no one else can
-        // but it needs to be public because we'll need the name
+        // no need for set or backing variable
+        // supply it when asked, but otherwise hidden
         // since it's derived from a dictionary field, simple get works
         // get just returns the dictionary acces
-        // no need for set or backing variable
-        public string Name
+
+        private string Name
         {
             get
             {
@@ -32,7 +33,8 @@ namespace Generals.Classes
         }
 
         // need a short name to display in the grid
-        public string DisplayName
+        // private, return only if asked
+        private string DisplayName
         {
             get
             {
@@ -42,7 +44,8 @@ namespace Generals.Classes
 
         // need a hidden name to display in the grid so the opposing player can't see it
         // no set, it'll never change
-        public string NameHidden
+        // lets make it private, why not, and return with a method
+        private string HiddenName
         {
             get
             {
@@ -60,15 +63,15 @@ namespace Generals.Classes
 
         // like Name, it's derived based on the Rank
         // like Name, it can't be changed
-        // needs to be public, the board will need it to calculate combat
-        // but the set can be private and based on an if statement
+        // definitely needs to be private, want to hide how strong a piece is
+        // the board will need it to calculate combat 
         public int ForceMultiplier
         {
             get
             {
                 if (Rank == -1) // rank of spy, most restrictive
                 {
-                    return 1;
+                    return -1;
                 }
                 else // everything else should be a 1
                 {
@@ -78,11 +81,11 @@ namespace Generals.Classes
             }
         }
 
-        // will need to be public so the board can calculate combat
+        // definitely private
+        // call using a method when needed for combat
         // will need to change when peices die
-        // initial value is true, all pieces are created alive
-        // private set, can't edit it directly, public otherwise since other classes need the info
-        public bool isAlive { get; private set; } = true;
+        // initial value is true, all pieces are created alive 
+        private bool isAlive { get; set; } = true;
 
         // will need to be public so the board knows if the piece is on the board or not
         // will need to change when peices die
@@ -95,12 +98,10 @@ namespace Generals.Classes
 
         // owning army property will be in the Army class
 
-        // will need to be public so the board can calculate moves and combat
-        // does it need to live here or on the board class?
+        // make it private, should only be able to move the piece through an action not set it directly
         // will need to be settable because it'll move
-        // needs to be public set so I can set up the board initially
         // no need to put default values, player will place them 
-        public string Position { get; set; } = "";
+        private string Position { get; set; } = "";
 
         // constructors
         // pieces must be built with these
@@ -118,17 +119,52 @@ namespace Generals.Classes
         }
 
         // methods
-        
-        
+        // gives the rank when asked
+        public int GetRank()
+        {
+            return Rank;
+        }
+        // gives the full name
+        public string GetName()
+        {
+            return Name;
+        }
+        // gives the short display name
+        public string GetShortDisplayName()
+        {
+            return DisplayName;
+        }
+        // gives the display name
+        public string GetHiddenName()
+        {
+            return HiddenName;
+        }
+        // gives the force multiplier
+        public int GetForceMultiplier()
+        {
+            return ForceMultiplier;
+        }
+        // get living status
+        public bool GetLifeStatus()
+        {
+            return isAlive;
+        }
+        // kill the piece when it loses!
+        // also add remove from board
+        public bool KillPiece()
+        {
+            isAlive = false;
+            isOnBoard = false;
+            return isAlive;
+        }
+        // on board status change
+        public bool IsPlaced()
+        {
+            isOnBoard = true;
+            return isOnBoard;
+        }
 
-        // move in all directions
-        // die
-        //TODO is attack here or in the board class?
-        //TODO is board position here or on the board?
 
-        // move method is public, we'll need to access it outside
-        // return true to make sure it works
-        // takes input from board class, updates the position
 
         // create dictionary field of Rank providing Name
         // public static, the army class needs it. Though... how do I avoid static?
@@ -140,8 +176,8 @@ namespace Generals.Classes
             { -1, "Spy" },
             { 0, "Private" },
             { 1, "Sergeant" },
-            { 2, "2nd Lieutenant" },
-            { 3, "1st Lieutenant" },
+            { 2, "Second Lieutenant" },
+            { 3, "First Lieutenant" },
             { 4, "Captain" },
             { 5, "Major" },
             { 6, "Lieutenant Colonel" },
@@ -176,7 +212,7 @@ namespace Generals.Classes
         // need a ToString override so I know what I'm working with
         public override string ToString()
         {
-            return $"{DisplayName}";
+            return $"{Name}";
         }
 
     }

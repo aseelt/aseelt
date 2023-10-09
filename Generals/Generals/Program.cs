@@ -10,12 +10,16 @@ namespace Generals
         static void Main(string[] args)
         {
             // start the game
-            InitializeUI initialize = new InitializeUI();
-            initialize.InitializeUIRuntime();
+            UI game = new UI();
+            game.InitializeUIRuntime();
 
-            // not sure if I need this right now
-            PlacementUI placement = new PlacementUI();
-            placement.PlacementUIRuntime();
+            // ui handles the user text to/from
+            // ui calls the actions class, that stores the board, the move action etc
+            // the actions calls the battlefield or the piece and they update themselves
+            //  action toggles between battlefields
+
+            // piece class is done
+
 
             
 
