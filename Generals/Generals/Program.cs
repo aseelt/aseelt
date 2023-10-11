@@ -20,7 +20,7 @@ namespace Generals
 
             // piece class is done
 
-
+            
             
 
             
@@ -29,5 +29,6 @@ namespace Generals
 
             
         }
+        
     }
 }
