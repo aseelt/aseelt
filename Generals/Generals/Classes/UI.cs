@@ -23,8 +23,8 @@ namespace Generals.Classes
             // the method parameter is the question you want to task
 
             //phase 1, game setup
-            Phase1();
-            
+            Phase1GameSetup();
+
 
             // assign a piece to a location
             // calls the piece's array position, doesn't create a piece
@@ -36,16 +36,16 @@ namespace Generals.Classes
 
             // instead use a method in battlefield to pull the piece out to be manipulated
             // then in piece, manipulate the position per placement, movement, or attack
-            Console.WriteLine(BattlefieldDisplay());
+            BattlefieldDisplay();
 
-            SetupPieces();
+            Phase2SetupPieces();
 
             //int pieceChosen = SetupAskForPiece($"Please enter a number 1-{Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count} to select a piece: ");
 
             return false;
         }
 
-        private bool Phase1()
+        private bool Phase1GameSetup()
         {
             // get the team name
             Console.WriteLine("Welcome to Generals");
@@ -69,7 +69,7 @@ namespace Generals.Classes
             // construct
             Game = new Game();
             Game.CreateBattlefield(playerOne, playerTwo);
-            
+
             return true;
         }
 
@@ -134,7 +134,7 @@ namespace Generals.Classes
 
         // displays the battlefield for the current player
         // hides the other player's pieces 
-        private string BattlefieldDisplay()
+        private bool BattlefieldDisplay()
         {
             string output = "";
             const string BlankLine = "x         x";
@@ -173,7 +173,8 @@ namespace Generals.Classes
                 output += CreateUILine(BlankLine);
                 output += CreateUILine(BottomLine);
             }
-            return output;
+            Console.WriteLine(output);
+            return true;
         }
 
         // helper method for the battlefield
@@ -202,29 +203,89 @@ namespace Generals.Classes
             return true;
         }
         // gets the value, parses, checks it's a valid piece
+
+        //private string[] KeyAndPieceEntry(string message)
+        //{
+        //    string[] pieceAndLocation = new string[2];
+        //    bool keepGoing = true;
+        //    do
+        //    {
+        //        try
+        //        {
+        //            Console.Write(message);
+        //            string entry = Console.ReadLine().Trim().ToUpper();
+
+        //            // throw an exception if the entry is wrong
+        //            if (!(entry.Contains(" ")) || !(entry.Length == 4 || entry.Length == 5))
+        //            {
+        //                throw new EntryWrongException();
+        //            }
+
+        //            // split, first one is the piece, second is the location
+        //            pieceAndLocation = entry.Split(" ");
+
+        //            // make sure the first value can be parsed to number
+        //            // catch if that fails
+        //            int pieceNumberNotUsed = 0;
+        //            if (!int.TryParse(pieceAndLocation[0].Trim(), out pieceNumberNotUsed))
+        //            {
+        //                throw new LocationChosenWrongException();
+        //            }
+
+        //            // parse has to happen separately elsewhere
+        //            //int pieceChosen = int.Parse(pieceAndLocation[0].Trim());
+
+        //            // make sure the second value is in the grid
+        //            // or isn't 99
+        //            // otherwise throw
+        //            if (!Game.Battlefields[PlayerToggle].GridReference.Contains(pieceAndLocation[1]) && !(pieceAndLocation[1] == "GR"))
+        //            {
+        //                throw new LocationChosenWrongException();
+        //            }
+
+        //            // if you get here, return the string array of piece and location
+        //            keepGoing = false;
+        //        }
+        //        catch (EntryWrongException ewe)
+        //        {
+        //            Console.WriteLine(ewe.Message + "\n");
+        //        }
+
+        //    } while (keepGoing);
+        //    return pieceAndLocation;
+
+        //}
         private int SetupAskForPiece()
         {
-
-            bool keepGoing = true;
             do
             {
                 try
                 {
-                    //print message
-                    Console.Write("Which piece would you like to place? (Type 99 to view the grid) ");
-                    // parse to number
-                    // catch if that fails
+                    // gonna try and make this a little less tedious 
+                    // print message
+                    // want the piece number and the location together in a space delimited string
+                    // have to get the value
+                    // split it with a " "
+                    // check the first value parses
+                    // check the second value is in the grid reference
+
+                    Console.Write("\n(Type '99' to view the grid) \n(Type '88' to view the list of pieces to place)" +
+                        "\nWhich Piece would you like to place? ");
+
                     int pieceChosen = int.Parse(Console.ReadLine().Trim());
 
                     // checks if the piece chosen is on the list of peices not on the board
                     // if so, breaks the loop and returns the piece for use
                     if (pieceChosen == 99)
                     {
-                        Console.WriteLine(BattlefieldDisplay());
+                        BattlefieldDisplay();
                     }
-                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count - 1))
+                    else if (pieceChosen == 88)
                     {
-                        keepGoing = false;
+                        SetupPiecesList();
+                    }
+                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count))
+                    {
                         return pieceChosen;
                     }
                     else
@@ -237,30 +298,30 @@ namespace Generals.Classes
                     Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                 }
 
-            } while (keepGoing);
+            } while (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count != 0);
 
             return 0;
         }
 
-
-
         private string SetupAskForLocation()
         {
-
             bool keepGoing = true;
             do
             {
                 try
                 {
+                    string locationChosen;
                     if (PlayerToggle == 0)
                     {
-                        Console.Write($"Please enter a grid location in rows 1-3 to place your piece: ");
+                        //!Game.Battlefields[PlayerToggle].GridReference.Contains(pieceAndLocation[1]) 
+                        Console.Write("Please enter a grid location (e.g. A1, B2, C5) in rows 1-3 to place your piece: ");
+                        locationChosen = Console.ReadLine().Trim().ToUpper();
                     }
                     else
                     {
-                        Console.Write($"Please enter a grid location in rows 6-8 to place your piece: ");
+                        Console.Write($"Please enter a grid location (e.g. A6, B7, C8) in rows 6-8 to place your piece: ");
+                        locationChosen = Console.ReadLine().Trim().ToUpper();
                     }
-                    string locationChosen = Console.ReadLine().Trim().ToUpper();
 
                     if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[PlayerToggle].GridReference.Contains(locationChosen))
                     {
@@ -294,7 +355,7 @@ namespace Generals.Classes
             return "";
         }
 
-        private bool PlacePiece(string location, int piece)
+        private bool PlacePiece(int piece, string location)
         {
             // check the location to see if it doesn't contain a piece other than ""
             // if no, place
@@ -306,6 +367,7 @@ namespace Generals.Classes
                 // for the grid location, if blank
                 // then place that peice's not on board location there
                 Game.Battlefields[PlayerToggle].Grid[location] = Game.Battlefields[PlayerToggle].PiecesNotOnBoard[piece - 1];
+                Console.WriteLine($"\nYour {Game.Battlefields[PlayerToggle].PiecesNotOnBoard[piece - 1].GetName()} has been placed on {location}.");
 
                 // update the piece to say its on the board
                 Game.Battlefields[PlayerToggle].Grid[location].IsPlaced();
@@ -319,8 +381,94 @@ namespace Generals.Classes
             }
 
         }
+        private bool SetupChangePieceLocation()
+        {
+            bool keepGoingYesNo = true;
+            do
+            {
+                Console.Write("\nWould you like to change the location of any pieces? (Y/N) ");
+                string changePieceLocationAnswer = Console.ReadLine().ToUpper().Trim();
+                if (changePieceLocationAnswer == "Y")
+                {
+                    // removes piece, adds it back to the notonboard list
+                    // changes the piece's onboard status to false
+                    // put blank piece in that square
+                    bool keepGoingPiece = true;
+                    do
+                    {
+                        try
+                        {
+                            //print message
+                            Console.Write("\n(Type '99' to view the grid) \n(Type '88' to view the list of pieces to place)" +
+                                "\nEnter the grid location of the piece you would like to change. ");
+                            // parse to number
+                            // catch if that fails
+                            string locationChosen = Console.ReadLine().Trim().ToUpper();
 
-        public bool SetupPieces()
+                            // check if it's a valid grid reference, or if it's 99
+                            // otherwise throw
+                            //if (!Game.Battlefields[PlayerToggle].GridReference.Contains(locationChosen) || !(locationChosen == "99") || !(locationChosen == "88"))
+                            //{
+                            //    throw new LocationChosenWrongException();
+                            //}
+
+                            // checks if the piece chosen is on the list of peices not on the board
+                            // if so, breaks the loop and returns the piece for use
+                            if (locationChosen == "99")
+                            {
+                                BattlefieldDisplay();
+                            }
+                            else if (locationChosen == "88")
+                            {
+                                SetupPiecesList();
+                            }
+                            else if (Game.Battlefields[PlayerToggle].GridReference.Contains(locationChosen))
+                            {
+                                if(Game.Battlefields[PlayerToggle].Grid[locationChosen].GetName() == "Blank")
+                                {
+                                    throw new PieceChosenWrongException();
+                                }
+                                // by this point it should be a valid location
+                                // change that position's on board status to false
+                                // put the piece in that location back on the list
+                                // put a blank piece in that location
+                                // end the loop 
+                                Game.Battlefields[PlayerToggle].Grid[locationChosen].RemoveFromBoard();
+                                Piece holdingPiece = Game.Battlefields[PlayerToggle].Grid[locationChosen];
+                                Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Add(holdingPiece);
+                                Game.Battlefields[PlayerToggle].Grid[locationChosen] = new Piece(-3);
+                                keepGoingPiece = false;
+                            }
+                            else
+                            {
+                                throw new LocationChosenWrongException();
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("You have entered an incorrect value. Please try again.\n");
+                        }
+
+                    } while (keepGoingPiece);
+                }
+                else if (changePieceLocationAnswer == "N")
+                {
+                    keepGoingYesNo = false;
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("You've entered an incorrect value.");
+                }
+            } while (keepGoingYesNo);
+
+
+
+            return false;
+        }
+
+        public bool Phase2SetupPieces()
         {
             //place piece
             //originates in UI
@@ -336,17 +484,43 @@ namespace Generals.Classes
             // update the piece's location y
             // remove from the list of pieces not on board but alive y
             // keep going till the pieces not on board list is empty y
-
+            bool keepGoing = true;
             int piecesLeftToPlace = Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count;
-
+            int setupCount = 0;
             do
             {
-                // hAVE TO do this for player one and player two. reference their names
-                SetupPiecesList();
-                int piece = SetupAskForPiece();
-                string location = SetupAskForLocation();
-                PlacePiece(location, piece);
-            } while (piecesLeftToPlace > 0);
+                // all pieces placed
+                // ask them if they want to change any pieces
+                // has to be a separate loop that asks when initial placement is all done
+                do
+                {
+                    SetupPiecesList();
+                    do
+                    {
+                        if (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count > 0)
+                        {
+                            // have to do this for player one and player two. reference their names
+                            int piece = SetupAskForPiece();
+                            string location = SetupAskForLocation();
+                            PlacePiece(piece, location);
+                        }
+                        else
+                        {
+                            keepGoing = false;
+                        }
+                    } while (keepGoing);
+
+                    SetupChangePieceLocation();
+
+                } while (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count > 0);
+
+                // once that is done, change the players
+                TogglePlayers();
+
+                //add to the count, when count is 2, loop exits
+                setupCount++;
+            } while (setupCount < 2);
+
 
             //game method asks for all pieces in the army list to be placed 
             //game method loops through list for each piece to be placed
@@ -356,8 +530,8 @@ namespace Generals.Classes
             //finally end with "Would you like to move any pieces
             //do I need a list of pieces on the board? Probably...
             //game method toggle determines which battlefield we are working with
-            //toggle false - only place pieces in a, b, c rows
-            //toggle true - only place pieces in f, g, h rows
+            //toggle false - only place pieces in 1, 2, 3 rows
+            //toggle true - only place pieces in 6, 7, 8 rows
             return true;
         }
     }

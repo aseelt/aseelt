@@ -154,13 +154,18 @@ namespace Generals.Classes
         public bool KillPiece()
         {
             isAlive = false;
-            isOnBoard = false;
+            RemoveFromBoard();
             return isAlive;
         }
         // on board status change
         public bool IsPlaced()
         {
             isOnBoard = true;
+            return isOnBoard;
+        }
+        public bool RemoveFromBoard()
+        {
+            isOnBoard = false;
             return isOnBoard;
         }
 
