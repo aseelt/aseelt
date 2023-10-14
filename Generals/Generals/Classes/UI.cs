@@ -9,11 +9,16 @@ namespace Generals.Classes
 {
     public class UI
     {
+        // give me my colours
+        public string Yellow = Console.IsOutputRedirected ? "" : "\x1b[93m";
+        public string Red = Console.IsOutputRedirected ? "" : "\x1b[91m";
+        public string Blue = Console.IsOutputRedirected ? "" : "\x1b[94m";
+        public string Grey = Console.IsOutputRedirected ? "" : "\x1b[97m";
         // start game
         public Game Game;
 
         // player toggle. player0 (playerOne) is false, player1 (playerTwo) is true
-        private int PlayerToggle { get; set; } = 0;
+        //private int PlayerToggle { get { return Game. } }
 
         public bool InitializeUIRuntime()
         {
@@ -27,44 +32,50 @@ namespace Generals.Classes
             //TODO method to show it in the center of the screen, press any key to continue, wipe
             Console.WriteLine("Welcome to Generals");
 
+
             //phase 1, game setup
             Phase1GameSetup();
+            //Game.Battlefields[0].Grid["A1"] = Game.Battlefields[0].Army[0];
+            //Game.Battlefields[1].Grid["A1"] = Game.Battlefields[1].Army[5];
+            //Game.TogglePlayers();
+            //Console.WriteLine(Game.BattlefieldDisplayGame());
 
             // assign a piece to a location
             // calls the piece's array position, doesn't create a piece
             // just a placeholder
-            //Game.Battlefields[0].Grid["A1"] = Game.Battlefields[0].Army[0];
-            //Game.Battlefields[1].Grid["A1"] = Game.Battlefields[1].Army[5];
 
-            //TogglePlayers();
 
             // instead use a method in battlefield to pull the piece out to be manipulated
             // then in piece, manipulate the position per placement, movement, or attack
             //BattlefieldDisplay();
 
             Phase2SetupPieces();
+            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+            Console.ReadKey();
+            Game.TogglePlayers();
+            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
 
             //int pieceChosen = SetupAskForPiece($"Please enter a number 1-{Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count} to select a piece: ");
 
             return false;
         }
-        
+
         /// <summary>
-        /// Toggles between the two players.
+        /// Toggles between the two players. Calls the method in Game, it doesn't live here.
         /// </summary>
         /// <returns>Returns 0 for the first player, 1 for the second player</returns>
-        private int TogglePlayers()
+        private int TogglePlayersInGame()
         {
-            if (PlayerToggle == 0)
-            {
-                PlayerToggle = 1;
-                return 1;
-            }
-            else
-            {
-                PlayerToggle = 0;
-                return 0;
-            }
+            return Game.TogglePlayers();
+        }
+
+        /// <summary>
+        /// Helper method to get the player number, so I don't have to keep calling the Game object
+        /// </summary>
+        /// <returns>Returns 0 for the first player, 1 for the second player</returns>
+        private int GetPlayerNumberFromBoard()
+        {
+            return Game.GetPlayerNumber();
         }
 
         /// <summary>
@@ -86,7 +97,126 @@ namespace Generals.Classes
             Console.Write("Press any key to continue.");
             Console.ReadKey();
             Console.Clear();
+            Console.WriteLine("\u001b[2J\u001b[3J"); // found this on reddit. Uses an ansi escape code,
+                                                     // the text represents "ESC [3J", which erases the scrollback buffer
+                                                     // can go either before or after the clear, but you need the clear otherwise you have black space
             return true;
+        }
+
+        /// <summary>
+        /// Displays the board / battlefield for that specific player. 
+        /// Has to live here otherwise we can't show both sides
+        /// </summary>
+        /// <param name="playerToggle"></param>
+        /// <returns>String battlefield for that player</returns>
+        public string BattlefieldDisplay(int playerToggle)
+        {
+            string output = "\n";
+            // taking out the blank spaces for extra space
+            // string BlankLine = "x         x";
+            string MiddleLine = $"{Grey}+-       -+{Grey}";
+            string BottomLine = $"{Grey}+---------+{Grey}";
+
+            for (int h = 0; h < 8; h++)
+            {
+                //top line, has to be like this 
+                for (int i = 0; i < 8; i++)
+                {
+                    output += $"{Yellow}{Game.Battlefields[playerToggle].xPositionToLetter[i]}{h + 1}{Yellow}{Grey}--------+{Grey}";
+                }
+                output += "\n";
+
+                //output += CreateUILine(BlankLine);
+
+                //player one line, has to be like this
+                for (int i = 0; i < 8; i++)
+                {
+                    output += DisplayChooserTop(h, i, playerToggle);
+                }
+                output += "\n";
+
+                //output += CreateUILine(BlankLine);
+                output += CreateUILine(MiddleLine);
+                //output += CreateUILine(BlankLine);
+
+                //player two line, has to be like this
+                for (int i = 0; i < 8; i++)
+                {
+                    output += DisplayChooserBottom(h, i, playerToggle);
+                }
+                output += "\n";
+
+                //output += CreateUILine(BlankLine);
+            }
+            output += CreateUILine(BottomLine);
+            return output;
+        }
+
+        /// <summary>
+        /// Helper method for the battlefield display. Calculates Player One's row - both visible and hidden states.
+        /// Should only be used in BattlefieldDisplay(), not elsewhere.
+        /// </summary>
+        /// <param name="h"></param>
+        /// <param name="i"></param>
+        /// <returns>String of Player One's pieces, by location</returns>
+        private string DisplayChooserTop(int h, int i, int playerToggle)
+        {
+            string topPlayerLine;
+            if (playerToggle == 0)
+            {
+                // if player toggle is 0 get the first player's battlefield
+                // for the cell, plus the army's name (the battlefield name), pull the display name
+
+                topPlayerLine = $"{Grey}| {Grey}{Red}{Game.Battlefields[0].Grid[$"{Game.Battlefields[0].xPositionToLetter[i]}{h + 1}" /* grid position gives that piece */].GetShortDisplayName() /* what that piece is*/ }{Red}{Grey} |{Grey}";
+            }
+            else
+            {
+                // if it's not the active player, pull the cell, and the battlefield's name
+                // but pull the hidden name
+                topPlayerLine = $"{Grey}| {Grey}{Red}{Game.Battlefields[0].Grid[$"{Game.Battlefields[1].xPositionToLetter[i]}{h + 1}"].GetHiddenName()}{Red}{Grey} |{Grey}";
+            }
+            return topPlayerLine;
+        }
+
+        /// <summary>
+        /// Helper method for the battlefield display. Calculates Player Two's row - both visible and hidden states.
+        /// Should only be used in BattlefieldDisplay(), not elsewhere.
+        /// Has to be duplicated like this, the code is slightly different to the Top version.
+        /// </summary>
+        /// <param name="h"></param>
+        /// <param name="i"></param>
+        /// <returns>String of Player Two's pieces, by location</returns>
+        private string DisplayChooserBottom(int h, int i, int playerToggle)
+        {
+            string bottomPlayerLine;
+            if (playerToggle == 0)
+            {
+                bottomPlayerLine = $"{Grey}| {Grey}{Blue}{Game.Battlefields[1].Grid[$"{Game.Battlefields[0].xPositionToLetter[i]}{h + 1}"].GetHiddenName()}{Blue}{Grey} |{Grey}";
+
+            }
+            else
+            {
+                bottomPlayerLine = $"{Grey}| {Grey}{Blue}{Game.Battlefields[1].Grid[$"{Game.Battlefields[1].xPositionToLetter[i]}{h + 1}"].GetShortDisplayName()}{Blue}{Grey} |{Grey}";
+            }
+            return bottomPlayerLine;
+        }
+
+
+        /// <summary>
+        /// Helper method for the battlefield display. Generates the static lines.
+        /// Should only be used in BattlefieldDisplay(), not elsewhere.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns>String used by BattlefieldDisplay()</returns>
+        private string CreateUILine(string line)
+        {
+            string output = "";
+            for (int i = 0; i < 8; i++)
+            {
+                output += line;
+            }
+            output += "\n";
+            return output;
         }
 
         //TODO intro method
@@ -101,6 +231,7 @@ namespace Generals.Classes
             string playerTwo = PlayerTwoSetup(playerOne);
             string field = BattlefieldName(playerOne, playerTwo);
 
+            // can't add colours here, it gets real funky
             Console.WriteLine($"The great battle between {playerOne} and {playerTwo} is about to begin in {field}!\n");
 
             ContinueAndClear();
@@ -112,7 +243,7 @@ namespace Generals.Classes
 
             return true;
         }
-        
+
         /// <summary>
         /// Returns the name of Player Two, validating it isn't the same as Player One.
         /// Requires Player One's name to perform the validation.
@@ -139,7 +270,7 @@ namespace Generals.Classes
             } while (keepGoingPLayerTwoName);
             return playerTwo;
         }
-        
+
         /// <summary>
         /// Returns the name of the battlefield, validating it isn't the same as Player One or Player Two.
         /// Requires Player One and Player Two's name to perform the validation.
@@ -168,143 +299,22 @@ namespace Generals.Classes
             return field;
         }
 
-        /// <summary>
-        /// Primary method to display the battlefield. Writes directly to the console.        
-        /// Includes top line that includes the grid reference, dynamically generated.
-        /// </summary>
-        /// <returns>Directly prints to the console</returns>
-        private bool BattlefieldDisplay()
-        {
-            string output = "\n";
-            const string BlankLine = "x         x";
-            const string MiddleLine = "x---------x";
-            const string BottomLine = "xxxxxxxxxxx";
 
-            for (int h = 0; h < 8; h++)
-            {
-                //top line, has to be like this
-                for (int i = 0; i < 8; i++)
-                {
-                    output += $"xXY{Game.Battlefields[0].xPositionToLetter[i]}{h + 1}xxxxxx";
-                }
-                output += "\n";
-
-                output += CreateUILine(BlankLine);
-
-                //player one line, has to be like this
-                for (int i = 0; i < 8; i++)
-                {
-                    output += DisplayChooserTop(h, i);
-                }
-                output += "\n";
-
-                output += CreateUILine(BlankLine);
-                output += CreateUILine(MiddleLine);
-                output += CreateUILine(BlankLine);
-
-                //player two line, has to be like this
-                for (int i = 0; i < 8; i++)
-                {
-                    output += DisplayChooserBottom(h, i);
-                }
-                output += "\n";
-
-                output += CreateUILine(BlankLine);
-                output += CreateUILine(BottomLine);
-            }
-            Console.WriteLine(output);
-            return true;
-        }
-        
-        /// <summary>
-        /// Helper method for the battlefield display. Calculates Player One's row - both visible and hidden states.
-        /// Should only be used in BattlefieldDisplay(), not elsewhere.
-        /// </summary>
-        /// <param name="h"></param>
-        /// <param name="i"></param>
-        /// <returns>String of Player One's pieces, by location</returns>
-        private string DisplayChooserTop(int h, int i)
-        {
-            string topPlayerLine;
-            if (PlayerToggle == 0)
-            //if (PlayerToggle.Peek() == Battlefields[playerToggle].PlayerName)
-            {
-                // if player toggle is 1 get the first player's battlefield
-                // for the cell, plus the army's name (the battlefield name), pull the display name
-
-                topPlayerLine = $"x {Game.Battlefields[0] /* first player */.Grid[$"{Game.Battlefields[0].xPositionToLetter[i]}{h + 1}" /* grid position gives that piece */].GetShortDisplayName() /* what that piece is*/ } x";
-            }
-            else
-            {
-                // if it's not the active player, pull the cell, and the battlefield's name
-                // but pull the hidden name
-                topPlayerLine = $"x {Game.Battlefields[0].Grid[$"{Game.Battlefields[0].xPositionToLetter[i]}{h + 1}"].GetHiddenName()} x";
-            }
-            return topPlayerLine;
-        }
-
-        /// <summary>
-        /// Helper method for the battlefield display. Calculates Player Two's row - both visible and hidden states.
-        /// Should only be used in BattlefieldDisplay(), not elsewhere.
-        /// Has to be duplicated like this, the code is slightly different to the Top version.
-        /// </summary>
-        /// <param name="h"></param>
-        /// <param name="i"></param>
-        /// <returns>String of Player Two's pieces, by location</returns>
-        private string DisplayChooserBottom(int h, int i)
-        {
-            string bottomPlayerLine;
-            //for(int i = 0; i < 8; i++)
-            //{
-
-            //}
-            if (PlayerToggle == 0)
-            {
-                bottomPlayerLine = $"x {Game.Battlefields[1].Grid[$"{Game.Battlefields[1].xPositionToLetter[i]}{h + 1}"].GetHiddenName()} x";
-
-            }
-            else
-            {
-                bottomPlayerLine = $"x {Game.Battlefields[1].Grid[$"{Game.Battlefields[1].xPositionToLetter[i]}{h + 1}"].GetShortDisplayName()} x";
-            }
-            return bottomPlayerLine;
-        }
-
-
-        /// <summary>
-        /// Helper method for the battlefield display. Generates the static lines.
-        /// Should only be used in BattlefieldDisplay(), not elsewhere.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <returns>String used by BattlefieldDisplay()</returns>
-        private string CreateUILine(string line)
-        {
-            string output = "";
-            for (int i = 0; i < 8; i++)
-            {
-                output += line;
-            }
-            output += "\n";
-            return output;
-        }
-                
         /// <summary>
         /// Displays pieces not currently on the board (and alive).
         /// Used only in the setup phase.
         /// </summary>
-        /// <returns>Prints directly to the console</returns>
-        private bool SetupPiecesList()
+        /// <returns>String of pieces.</returns>
+        private string SetupPiecesList()
         {
 
-            string output = "\nThese pieces have not been placed yet:\n\n";
+            string output = $"\nThese {Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count} pieces have not been placed yet:\n\n";
 
-            for (int i = 0; i < Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count; i++)
+            for (int i = 0; i < Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count; i++)
             {
-                output += $"{i + 1}. {Game.Battlefields[PlayerToggle].PiecesNotOnBoard[i].GetName()}\n";
+                output += $"{i + 1}. {Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard[i].GetName()}\n";
             }
-            Console.WriteLine(output);
-
-            return true;
+            return output;
         }
 
         /// <summary>
@@ -321,7 +331,8 @@ namespace Generals.Classes
                     // this is slightly clunky for the player - there's a lot of typing and entry
                     // but it's simpler in the long run
                     //TODO future enhancement - randomize piece placement
-                    Console.Write("\n(Type '99' to view the grid) \n(Type '88' to view the list of pieces to place)" +
+                    Console.Write("\n(Type '99' to view the grid) \n(Type '88' to view the list of pieces to place) " +
+                        "\n(Type '77' to have the game assign the remaining pieces)" +
                         "\nWhich Piece would you like to place? ");
 
                     int pieceChosen = int.Parse(Console.ReadLine().Trim());
@@ -330,13 +341,17 @@ namespace Generals.Classes
                     // if so, breaks the loop and returns the piece for use
                     if (pieceChosen == 99)
                     {
-                        BattlefieldDisplay();
+                        Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
                     }
                     else if (pieceChosen == 88)
                     {
-                        SetupPiecesList();
+                        Console.WriteLine(SetupPiecesList());
                     }
-                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count))
+                    else if (pieceChosen == 77)
+                    {
+                        return pieceChosen;
+                    }
+                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count))
                     {
                         return pieceChosen;
                     }
@@ -350,7 +365,7 @@ namespace Generals.Classes
                     Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                 }
 
-            } while (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count != 0);
+            } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count != 0);
 
             return 0;
         }
@@ -368,7 +383,7 @@ namespace Generals.Classes
                 try
                 {
                     string locationChosen;
-                    if (PlayerToggle == 0)
+                    if (GetPlayerNumberFromBoard() == 0)
                     {
                         //!Game.Battlefields[PlayerToggle].GridReference.Contains(pieceAndLocation[1]) 
                         Console.Write("Please enter a grid location (e.g. A1, B2, C5) in rows 1-3 to place your piece: ");
@@ -380,14 +395,14 @@ namespace Generals.Classes
                         locationChosen = Console.ReadLine().Trim().ToUpper();
                     }
 
-                    if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[PlayerToggle].GridReference.Contains(locationChosen))
+                    if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
                     {
-                        if (PlayerToggle == 0 && (locationChosen.EndsWith("1") || locationChosen.EndsWith("2") || locationChosen.EndsWith("3")))
+                        if (GetPlayerNumberFromBoard() == 0 && (locationChosen.EndsWith("1") || locationChosen.EndsWith("2") || locationChosen.EndsWith("3")))
                         {
                             keepGoing = false;
                             return locationChosen;
                         }
-                        else if (PlayerToggle == 1 && (locationChosen.EndsWith("6") || locationChosen.EndsWith("7") || locationChosen.StartsWith("8")))
+                        else if (GetPlayerNumberFromBoard() == 1 && (locationChosen.EndsWith("6") || locationChosen.EndsWith("7") || locationChosen.StartsWith("8")))
                         {
                             keepGoing = false;
                             return locationChosen;
@@ -420,32 +435,7 @@ namespace Generals.Classes
         // simplifies this hot mess of a code
         // helper methods above do the piece validation
         // but then asking for the piece and location... is that handled here or on the board?
-        private bool PlacePiece(int piece, string location)
-        {
-            // check the location to see if it doesn't contain a piece other than ""
-            // if no, place
-            // if yes, return error
 
-            if (Game.Battlefields[PlayerToggle].Grid[location].GetName() == "Blank")
-            {
-                // this code is a hot mess
-                // for the grid location, if blank
-                // then place that peice's not on board location there
-                Game.Battlefields[PlayerToggle].Grid[location] = Game.Battlefields[PlayerToggle].PiecesNotOnBoard[piece - 1];
-                Console.WriteLine($"\nYour {Game.Battlefields[PlayerToggle].PiecesNotOnBoard[piece - 1].GetName()} has been placed on {location}.");
-
-                // update the piece to say its on the board
-                Game.Battlefields[PlayerToggle].Grid[location].IsPlaced();
-                Game.Battlefields[PlayerToggle].PiecesNotOnBoard.RemoveAt(piece - 1);
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("A piece already exists at this location. Please try again.");
-                return false;
-            }
-
-        }
         private bool SetupChangePieceLocation()
         {
             bool keepGoingYesNo = true;
@@ -474,15 +464,15 @@ namespace Generals.Classes
                             // if so, breaks the loop and returns the piece for use
                             if (locationChosen == "99")
                             {
-                                BattlefieldDisplay();
+                                Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
                             }
                             else if (locationChosen == "88")
                             {
-                                SetupPiecesList();
+                                Console.WriteLine(SetupPiecesList());
                             }
-                            else if (Game.Battlefields[PlayerToggle].GridReference.Contains(locationChosen))
+                            else if (Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
                             {
-                                if (Game.Battlefields[PlayerToggle].Grid[locationChosen].GetName() == "Blank")
+                                if (Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen].GetName() == "Blank")
                                 {
                                     throw new PieceChosenWrongException();
                                 }
@@ -491,10 +481,10 @@ namespace Generals.Classes
                                 // put the piece in that location back on the list
                                 // put a blank piece in that location
                                 // end the loop 
-                                Game.Battlefields[PlayerToggle].Grid[locationChosen].RemoveFromBoard();
-                                Piece holdingPiece = Game.Battlefields[PlayerToggle].Grid[locationChosen];
-                                Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Add(holdingPiece);
-                                Game.Battlefields[PlayerToggle].Grid[locationChosen] = new Piece(-3);
+                                Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen].RemoveFromBoard();
+                                Piece holdingPiece = Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen];
+                                Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Add(holdingPiece);
+                                Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen] = new Piece(-3);
                                 keepGoingPiece = false;
                             }
                             else
@@ -526,7 +516,7 @@ namespace Generals.Classes
             return false;
         }
 
-        public bool Phase2SetupPieces()
+        private bool Phase2SetupPieces()
         {
             //place piece
             //originates in UI
@@ -542,34 +532,47 @@ namespace Generals.Classes
             // update the piece's location y
             // remove from the list of pieces not on board but alive y
             // keep going till the pieces not on board list is empty y
-            
+
             int setupCount = 0;
             do
             {
                 // all pieces placed
                 // ask them if they want to change any pieces
                 // has to be a separate loop that asks when initial placement is all done
-                Console.WriteLine($"{Game.Battlefields[PlayerToggle].PlayerName}, it's time to place your pieces on the board.");
+                Console.WriteLine($"{Game.Battlefields[GetPlayerNumberFromBoard()].PlayerName}, it's time to place your pieces on the board.");
 
                 do
                 {
-                    SetupPiecesList();
+                    Console.WriteLine(SetupPiecesList());
                     do
                     {
-
                         // have to do this for player one and player two. reference their names
                         int piece = SetupAskForPiece();
-                        string location = SetupAskForLocation();
-                        PlacePiece(piece, location);
 
-                    } while (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count > 0);
+                        if (piece == 77)
+                        {
+                            //do the randomized piece assignments on the board
+                            //print the battlefield with "hey this is how the pieces are placed" header
+                            // side method to pass location and piece number
+                            // do that in the board
+                            // call the game
+                            Console.WriteLine(Game.SetupPiecePlacementRandomizerGame()); 
+                            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+                        }
+                        else
+                        {
+                            string location = SetupAskForLocation();
+                            Console.WriteLine(Game.SetupPlacePieceGame(piece, location));
+                        }
+
+                    } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count > 0);
 
                     SetupChangePieceLocation();
 
-                } while (Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count > 0);
+                } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count > 0);
 
                 // once that is done, change the players
-                TogglePlayers();
+                TogglePlayersInGame();
 
                 //add to the count, when count is 2, loop exits
                 setupCount++;

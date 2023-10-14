@@ -118,21 +118,152 @@ namespace Generals.Classes
             return grid;
         }
 
-        public string PlacePiece(string key)
+
+        //methods
+
+
+        /// <summary>
+        /// Places the piece on the location of the board specified, checking to make sure it is blank
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public string SetupPlacePieceBoard(int piece, string location)
         {
-            //place piece
-            //originates in game
-            //game method asks for all pieces in the army list to be placed 
-            //game method loops through list for each piece to be placed
-            //sends instructions to the board
-            //board then updates the piece
-            //piece says "i am now on board"
-            //finally end with "Would you like to move any pieces
-            //do I need a list of pieces on the board? Probably...
-            //game method toggle determines which battlefield we are working with
-            //toggle false - only place pieces in a, b, c rows
-            //toggle true - only place pieces in f, g, h rows
-            return "";
+            // check the location to see if it doesn't contain a piece other than ""
+            // if no, place
+            // if yes, return error
+
+            if (Grid[location].GetName() == "Blank")
+            {
+                // this code is a hot mess
+                // for the grid location, if blank
+                // then place that peice's not on board location there
+                Grid[location] = PiecesNotOnBoard[piece - 1];
+
+                // update the piece to say its on the board
+                Grid[location].IsPlaced();
+
+                //need to store this string before removal
+                string output = $"\nYour {PiecesNotOnBoard[piece - 1].GetName()} has been placed on {location}.";
+                PiecesNotOnBoard.RemoveAt(piece - 1);
+
+                return output;
+            }
+            else
+            {
+                return "A piece already exists at this location. Please try again.";
+            }
+
+        }
+        /// <summary>
+        /// Randomly assigns locations to the remaining pieces not yet on the board
+        /// </summary>
+        /// <param name="playerToggle"></param>
+        /// <returns>String message if successful, by piece</returns>
+        public string SetupPiecePlacementRandomizerBoard(int playerToggle)
+        {
+            // shuffle the pieces not on board list
+            // go through each one by one
+            // get a random location based on the player number
+            // make sure the locations available are blank
+            // store this in an array to make sure there are no dupes
+            // if the player toggle is 0, grid reference 0-23
+            // if the player toggle is 1, grid referenc 40-63
+
+            string piecePlacementMessage = "The following pieces have randomly been placed on the board. Please adjust as necessary.\n";
+             
+            List<string> randomizedBlankLocations = new List<string>(LocationRandomizer(playerToggle));
+
+            // then assign locations to the pieces not on the board
+            // this needs to be a while
+            while (PiecesNotOnBoard.Count > 0)
+            {
+                // go through the pieces not on board
+                // find it's place in the shuffled piece's list, and return that number 
+                
+                // need a 1 because setup place piece board takes user input of actual value and changes it to zero based indexing
+                piecePlacementMessage += SetupPlacePieceBoard(1, randomizedBlankLocations[0]);
+                
+                // remove from shuffledPieces and blankLocations lists so we don't have conflicts
+                randomizedBlankLocations.RemoveAt(0);        
+            }
+            return piecePlacementMessage;
+        }
+        /// <summary>
+        /// Helper method to randomize loacations to place pieces on if player does not want to manually
+        /// </summary>
+        /// <param name="gridReference"></param>
+        /// <param name="playerToggle"></param>
+        /// <returns>List of randomized, valid, locations, for the current player</returns>
+        private List<string> LocationRandomizer(int playerToggle)
+        {
+            // based this method on the above            
+            List<string> selectedLocations = new List<string>();
+            List<string> randomizedSelectedLocations = new List<string>();
+            Random rnd = new Random();
+
+            // holding numbers to start our cycle
+            int i;
+            int j;
+            int k;
+
+            //if player toggle is 0, want positions 0, 1, 2 and 8x multiples of it
+            if (playerToggle == 0) 
+            {
+                // pull the blank locations from the grid and put them in the list
+                //pull the first 24 positions out of the grid reference
+                // have to do this 3 times...
+                i = 0;
+                j = 1;
+                k = 2;
+
+                LocationChooserHelper(selectedLocations,i);
+                LocationChooserHelper(selectedLocations,j);
+                LocationChooserHelper(selectedLocations,k); 
+            }
+            else //otherwise, want positions 5, 6, 7 and 8x multiples of it
+            {
+                i = 5;
+                j = 6;
+                k = 7;
+
+                LocationChooserHelper(selectedLocations, i);
+                LocationChooserHelper(selectedLocations, j);
+                LocationChooserHelper(selectedLocations, k);
+            }
+
+            // when the selected locations list of blanks is built, randomize it 
+            while (selectedLocations.Count > 0)
+            {
+                int index = rnd.Next(0, selectedLocations.Count); // give me a random number between 0 and the end of the list
+                randomizedSelectedLocations.Add(selectedLocations[index]); //add the old list at that random position to the new list, one by one
+                selectedLocations.RemoveAt(index); //remove the old list item so it's not pulled in again
+            }
+            return randomizedSelectedLocations;
+        }
+        /// <summary>
+        /// Helper method for the Location Randomizer method. Obtains the list of valid positions for that player
+        /// </summary>
+        /// <param name="selectedLocations"></param>
+        /// <param name="counter"></param>
+        /// <returns>List of valid locations for that player's starting lineup.</returns>
+        private List<string> LocationChooserHelper(List<string> selectedLocations, int counter)
+        {
+            // pull the blank locations from the grid and put them in the list
+            //pull the first 24 positions out of the grid reference 
+            for (int i = counter; i < 64; i += 8)
+            {
+                // pull the location
+                string location = GridReference[i];
+                // check if it's empty
+                if (Grid[location].GetRank() == -3)
+                {
+                    //if empty, add it to the selected locations list
+                    selectedLocations.Add(location); 
+                }
+            }
+            return selectedLocations;
         }
 
 

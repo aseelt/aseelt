@@ -14,19 +14,11 @@ namespace Generals.Classes
         // but need one
         public Board[] Battlefields { get; set; } = new Board[2];
 
-        
-
-        // what if it's a dictionary, then I can call the key instead of the array position
-        // i would love to but it's not working...
-        //public Dictionary<string, Battlefield> Battlefields = new Dictionary<string, Battlefield>();
-
-        // queue for the next player
-        // hold this information here, then toggle in the UI using a method below
-        //TODO queue
-        //public Queue<string> PlayerToggle = new Queue<string>();
+        // player toggle. player0 (playerOne) is false, player1 (playerTwo) is true
+        private int PlayerToggle { get; set; } = 0;
 
 
-        // methods
+        // Constructor
         // create battlefields and add it to the dictionary with the keys
         // add the players to the queue
         public bool CreateBattlefield(string nameOne, string nameTwo)
@@ -40,11 +32,58 @@ namespace Generals.Classes
             return true;
         }
 
-        
+        // methods
 
         
 
-        
-        
+        /// <summary>
+        /// Returns the player number
+        /// </summary>
+        /// <returns>Returns Int. 0 is Player 1, 1 is Player 2</returns>
+        public int GetPlayerNumber()
+        {
+            return PlayerToggle;
+        }
+
+        /// <summary>
+        /// Toggles between the two players.
+        /// </summary>
+        /// <returns>Returns 0 for the first player, 1 for the second player</returns>
+        public int TogglePlayers()
+        {
+            if (PlayerToggle == 0)
+            {
+                PlayerToggle = 1;
+                return 1;
+            }
+            else
+            {
+                PlayerToggle = 0;
+                return 0;
+            }
+        }
+
+
+        //this needs to live here as a go between. The game tracks which player is currently playing
+        /// <summary>
+        /// Instructs the correct player board to place a piece based on the user's scrubbed input
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="location"></param>
+        /// <returns>String outcome (succesful/not).</returns>
+        public string SetupPlacePieceGame(int piece, string location)
+        {
+            return Battlefields[PlayerToggle].SetupPlacePieceBoard(piece, location);
+        }
+
+        /// <summary>
+        /// Instructs the board to randomly assign the remaining pieces.
+        /// Needs to live here as the game controls which player is active
+        /// </summary>
+        /// <returns>Returns string of successful placements</returns>
+        public string SetupPiecePlacementRandomizerGame()
+        {
+            return Battlefields[PlayerToggle].SetupPiecePlacementRandomizerBoard(PlayerToggle);
+        }
     }
 }
