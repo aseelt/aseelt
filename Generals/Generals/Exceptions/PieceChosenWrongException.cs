@@ -8,7 +8,7 @@ namespace Generals.Exceptions
 {
     public class PieceChosenWrongException : Exception
     {
-        public PieceChosenWrongException() : base("Piece selection entered is null or empty")
+        public PieceChosenWrongException() : base("Please retry to select a piece.")
         {
         }
     }

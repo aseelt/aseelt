@@ -109,7 +109,6 @@ namespace Generals.Classes
         // put in some error checking
         // in the team, automate the process of creating the rank
         // so no user can input values and make a custom deck
-        public Piece() { }
         public Piece(int rank)
         {
             if (rank >= -3 && rank <= 12) // only create if accurate value supplied for ranks 5* to flag

@@ -8,7 +8,7 @@ namespace Generals.Exceptions
 {
     public class LocationChosenWrongException : Exception
     {
-        public LocationChosenWrongException() : base("Location entered was incorrect")
+        public LocationChosenWrongException() : base("Please retry to select a location.")
         {
         }
     }

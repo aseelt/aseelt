@@ -17,7 +17,6 @@ namespace Generals.Classes
         // player toggle. player0 (playerOne) is false, player1 (playerTwo) is true
         private int PlayerToggle { get; set; } = 0;
 
-
         // Constructor
         // create battlefields and add it to the dictionary with the keys
         // add the players to the queue
@@ -34,7 +33,7 @@ namespace Generals.Classes
 
         // methods
 
-        
+
 
         /// <summary>
         /// Returns the player number
@@ -63,6 +62,10 @@ namespace Generals.Classes
             }
         }
 
+        public string PiecesToPlace()
+        {
+            return Battlefields[PlayerToggle].PiecesToPlace();
+        }
 
         //this needs to live here as a go between. The game tracks which player is currently playing
         /// <summary>
@@ -84,6 +87,42 @@ namespace Generals.Classes
         public string SetupPiecePlacementRandomizerGame()
         {
             return Battlefields[PlayerToggle].SetupPiecePlacementRandomizerBoard(PlayerToggle);
+        }
+
+        /// <summary>
+        /// Instructs the board to change the locations of pieces at the request of the player
+        /// Only available during setup phase
+        /// Needs to live here as the game controls which player is active
+        /// </summary>
+        /// <param name="locationChosen"></param>
+        /// <returns>Returns string of successful placements</returns>
+        public bool SetupChangePieceLocation(string locationChosen)
+        {
+            return Battlefields[PlayerToggle].SetupChangePieceLocation(locationChosen);
+        }
+
+        public string GetListOfDeaths()
+        {
+            return Battlefields[PlayerToggle].
+        }
+
+        /// <summary>
+        /// Breaks the Phase 3 loop and declares victory if a team's flag reaches the other side
+        /// Checks both player's battlefields for victory
+        /// </summary>
+        /// <returns>String of which player has won</returns>
+        public string DeclareReachedTheOtherSideVictory()
+        {
+            // has to be the player's turn, their flag has to be alive, and the playerOneVictoryCount has to be 1
+            if (PlayerToggle == 0 && Battlefields[PlayerToggle].DeclareReachedOtherSideVictory() == true)
+            {
+                return "One";
+            }
+            else if (PlayerToggle == 1 && Battlefields[PlayerToggle].DeclareReachedOtherSideVictory() == true)
+            {
+                return "Two";
+            }
+            return "";
         }
     }
 }

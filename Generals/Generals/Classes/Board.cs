@@ -19,10 +19,10 @@ namespace Generals.Classes
 
         // array of positions to letters reference
         //TODO decide if you want this public or private
-        public string[] xPositionToLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
+        public string[] xPositionToLetter = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
         // grid creation for reference
-        public string[] GridReference = new string[64];
+        public string[] GridReference = new string[72];
 
         // need an x axis and a y axis
         // the piece calls on the dictionary key values
@@ -55,6 +55,9 @@ namespace Generals.Classes
         // private set, only want the board changing this
         // public get, we want to access this with the game or the UI
         public List<Piece> PiecesKilled { get; private set; } = new List<Piece>();
+
+        // victory counters
+        private int VictoryCount { get; set; } = 0;
 
         // set up the constructor, it'll create the battlefield
         // public   
@@ -96,10 +99,16 @@ namespace Generals.Classes
             PiecesNotOnBoard = new List<Piece>(Army);
         }
 
+        //methods
+
+        /// <summary>
+        /// Builds the grid for play
+        /// </summary>
+        /// <returns>Returns a dictionary grid of the field of play</returns>
         private Dictionary<string, Piece> BuildGrid()
         {
             Dictionary<string, Piece> grid = new Dictionary<string, Piece>();
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 9; i++)
             {
                 // for each position in the xAxis array
                 // add a number to it so it reads A1, A2, A3
@@ -119,8 +128,20 @@ namespace Generals.Classes
         }
 
 
-        //methods
+        /// <summary>
+        /// Provides the list of pieces not yet on the board
+        /// </summary>
+        /// <returns>String of pieces not yet on the board</returns>
+        public string PiecesToPlace()
+        {
+            string output = $"\nThese {PiecesNotOnBoard.Count} pieces have not been placed yet:\n\n";
 
+            for (int i = 0; i < PiecesNotOnBoard.Count; i++)
+            {
+                output += $"{i + 1}. {PiecesNotOnBoard[i].GetName()}\n";
+            }
+            return output;
+        }
 
         /// <summary>
         /// Places the piece on the location of the board specified, checking to make sure it is blank
@@ -168,8 +189,8 @@ namespace Generals.Classes
             // get a random location based on the player number
             // make sure the locations available are blank
             // store this in an array to make sure there are no dupes
-            // if the player toggle is 0, grid reference 0-23
-            // if the player toggle is 1, grid referenc 40-63
+            // if the player toggle is 0, grid references are 0,1,2 x9
+            // if the player toggle is 1, grid references are 5,6,7 x9
 
             string piecePlacementMessage = "The following pieces have randomly been placed on the board. Please adjust as necessary.\n";
              
@@ -208,7 +229,7 @@ namespace Generals.Classes
             int j;
             int k;
 
-            //if player toggle is 0, want positions 0, 1, 2 and 8x multiples of it
+            //if player toggle is 0, want positions 0, 1, 2 and 9x multiples of it
             if (playerToggle == 0) 
             {
                 // pull the blank locations from the grid and put them in the list
@@ -251,8 +272,8 @@ namespace Generals.Classes
         private List<string> LocationChooserHelper(List<string> selectedLocations, int counter)
         {
             // pull the blank locations from the grid and put them in the list
-            //pull the first 24 positions out of the grid reference 
-            for (int i = counter; i < 64; i += 8)
+            //pull the first 27 positions out of the grid reference 
+            for (int i = counter; i < 72; i += 8)
             {
                 // pull the location
                 string location = GridReference[i];
@@ -266,31 +287,63 @@ namespace Generals.Classes
             return selectedLocations;
         }
 
+        public bool SetupChangePieceLocation(string locationChosen)
+        {
+            // change the status of the piece to not on board
+            // put it in a holding piece just for this method
+            // add it back to the board's PiecesNotOnBoard list
+            // replace that current spot with a blank piece
+            Grid[locationChosen].RemoveFromBoard();
+            Piece holdingPiece = Grid[locationChosen];
+            PiecesNotOnBoard.Add(holdingPiece);
+            Grid[locationChosen] = new Piece(-3);
 
-        // move piece
-        //      Action works on the battlefield
-        //      Battlefield works on the piece to udpate its position
-        //      validate if it's an actual legal move
-        //          if it's one of the reference positions
-        //          so method has to return true/false if it worked
-        //      check if the cell being moved to is occupied by the other team
-        //          if so, check if you want to attack
-        //          if yes, attack
-        //                  how does this work? 
-        //                  what if we do an array of 0, 1, 2, 3 -
-        //                      0, are you sure you want to attack,
-        //                      1, attack made - result,
-        //                      2, position moved,
-        //                      3, position is invalid
-        //          attack kills one or both pieces
-        // then move
-        // replace prior piece
-        // get the input from the actions
-        // validate here if it's true, then call the method for the piece to move the piece
-        // if moved, return true, if not move false
-        // actions/ui says if move was successful or not based on what's returned here
-        // check if the move results in an attack (separate method)
+            //return false when done so the SetupChangePieceLocation loop breaks in UI
+            return false;
+        }
+        /// <summary>
+        /// List of deaths in a player's army
+        /// </summary>
+        /// <returns>String of pieces no longer alive and removed from the board</returns>
+        public string ListOfDeaths()
+        {
+            string output = $"\nYou have lost the following {PiecesKilled.Count} pieces:\n\n";
 
+            for (int i = 0; i < PiecesKilled.Count; i++)
+            {
+                output += $"{i + 1}. {PiecesKilled[i].GetName()}\n";
+            }
+            return output;
+        }
+
+
+        /// <summary>
+        /// Increments the victory counter for each player.
+        /// Flag needs to reach the opposite end of the board and stay alive for one turn
+        /// before victory can be declared.
+        /// </summary>
+        /// <returns>Always returns true.</returns>
+        public bool IncrementVictoryCounter()
+        {
+            VictoryCount++;
+            
+            return true;
+        }
+
+        /// <summary>
+        /// Method that declares this team's victory
+        /// Flag needs to reach the opposite end of the board and stay alive for one turn
+        /// before victory can be declared.
+        /// </summary>
+        /// <returns>Returns true if victory is to be declared</returns>
+        public bool DeclareReachedOtherSideVictory()
+        {
+            if (Army[0].GetLifeStatus() == true && VictoryCount == 1)
+            {
+                return true;
+            }
+            return false;
+        }
 
         // need a ToString override so I know what I'm working with
         public override string ToString()
