@@ -18,8 +18,7 @@ namespace Generals.Classes
         // no set, once created by constructor it can't be changed
         public string PlayerName { get; }
 
-        // array of positions to letters reference
-        //TODO decide if you want this public or private
+        // array of positions to letters reference 
         public string[] xPositionToLetter = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
         // grid creation for reference
@@ -75,8 +74,13 @@ namespace Generals.Classes
                 Army.Add(piece);
             }
             Army.Add(new Piece(-1));
-            // rest of the army
-            for (int i = -2; i < 13; i++)
+            // rest of the army, skipping 1
+            for (int i = -2; i < 1; i++)
+            {
+                Piece piece = new Piece(i);
+                Army.Add(piece);
+            }
+            for (int i = 2; i < 14; i++)
             {
                 Piece piece = new Piece(i);
                 Army.Add(piece);
@@ -525,9 +529,7 @@ namespace Generals.Classes
                 {
                     return "Flag";
                 }
-                return "Other";
-
-                //TODO create log of moves
+                return "Other"; 
             }
             else
             {

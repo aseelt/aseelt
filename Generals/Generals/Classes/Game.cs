@@ -21,6 +21,9 @@ namespace Generals.Classes
         // which player has won
         public int Victor { get; private set; } = -1;
 
+        // victory method
+        public string VictoryMethod { get; private set; } = ""; 
+
         // Constructor
         // create battlefields and add it to the dictionary with the keys
         // add the players to the queue
@@ -54,7 +57,7 @@ namespace Generals.Classes
         /// <returns>If player one selected, returns 1 (player two) and vice versa.</returns>
         public int GetOppositePlayerNumber()
         {
-            return PlayerToggle == 0 ? 1 : 0;             
+            return PlayerToggle == 0 ? 1 : 0;
         }
 
         /// <summary>
@@ -176,6 +179,7 @@ namespace Generals.Classes
                 {
                     // if blank neighbours, immediate victory
                     Victor = PlayerToggle;
+                    UpdateVictoryMethod($"{Battlefields[PlayerToggle].PlayerName}'s flag reached safety, unopposed, for a clear win!");
                     return "Immediate";
                 }
                 else
@@ -207,7 +211,7 @@ namespace Generals.Classes
                     return true;
                 }
             }
-            if (PlayerToggle == 1)
+            else if (PlayerToggle == 1)
             {
                 string lastCharOfFlagLocation = Battlefields[PlayerToggle].BoardCheckFlagLocation();
 
@@ -232,6 +236,164 @@ namespace Generals.Classes
             return false;
         }
 
+        
+
+        /// <summary>
+        /// Manages the combat after the player commits
+        /// Has to live in the board class
+        /// </summary>
+        /// <param name="currentLocation"></param>
+        /// <param name="futureLocation"></param>
+        /// <returns>Returns messages regarding outcome</returns>
+        public string ManageAttack(string currentLocation, string futureLocation)
+        {
+            // attacker is current player
+            // defender is other player
+            // get the pieces
+            // both occupy the same location
+            // it's the rank of attacker multiplied by the force multiplier of the defender
+            Piece attackingPiece = Battlefields[PlayerToggle].Grid[futureLocation];
+            Piece defendingPiece = Battlefields[GetOppositePlayerNumber()].Grid[futureLocation];
+            Piece backfillPiece = new Piece(-3);
+            string output = "";
+
+            // math is attacking piece's rank multiplied by defending piece's force multiplier 
+
+                // mashups, starting with the rarest (attacking a flag)
+            if (attackingPiece.GetName() == "Flag" && defendingPiece.GetName() == "Flag")
+            {
+                output = "\nYour flag has pulled off the unthinkable and captured the opposing team's flag!\n";
+                UpdateVictoryMethod($"{Battlefields[PlayerToggle].PlayerName} captured the enemy's flag with their own, in a display of skill.");
+                // flag is always going to lose, regardless of what's attacking
+                // doesn't matter if it's an attacking flag, don't need a separate if block
+                Battlefields[GetOppositePlayerNumber()].Army[0].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation] = backfillPiece;
+
+                // add it to the killed pieces list
+                Battlefields[GetOppositePlayerNumber()].PiecesKilled.Add(defendingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Captured the enemy's flag with their own");
+
+                // this will result in a victory for the attacking team
+                Victor = PlayerToggle;
+
+                return output;
+            }
+            else if (defendingPiece.GetName() == "Flag")
+            {
+                output = "\nYou captured the enemy's flag! Victory is yours!\n";
+                UpdateVictoryMethod($"{Battlefields[PlayerToggle].PlayerName} captured the enemy's flag with a mastery of battlefield tactics (and perhaps luck...)");
+                // flag is always going to lose, regardless of what's attacking
+                // doesn't matter if it's an attacking flag, don't need a separate if block
+                Battlefields[GetOppositePlayerNumber()].Army[0].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation] = backfillPiece; 
+
+                // add it to the killed pieces list
+                Battlefields[GetOppositePlayerNumber()].PiecesKilled.Add(defendingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Flag captured");
+
+                // this will result in a victory for the attacking team
+                Victor = PlayerToggle;
+
+                return output;
+            }
+            else if(attackingPiece.GetName() == "Flag" && defendingPiece.GetName() != "Flag")
+            {
+                output = "\nYou have lost your flag in a daring assualt. You've lost, miserably.\n";
+                UpdateVictoryMethod($"{Battlefields[GetOppositePlayerNumber()].PlayerName} captured the enemy's flag with a mastery of battlefield tactics (and perhaps luck...)");
+                // flag is always going to lose, regardless of what's attacking
+                // doesn't matter if it's an attacking flag, don't need a separate if block
+                Battlefields[PlayerToggle].Army[0].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[PlayerToggle].Grid[futureLocation] = backfillPiece;
+
+                // add it to the killed pieces list
+                Battlefields[PlayerToggle].PiecesKilled.Add(defendingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Flag lost in an assault");
+
+                // this will result in a victory for the defending team
+                ForfeitProtocol();
+
+                return output;
+            }
+
+            // if the attacker and defender are equal strength
+            else if ((attackingPiece.GetRank() * defendingPiece.GetForceMultiplier()) == (defendingPiece.GetRank() * attackingPiece.GetForceMultiplier()))
+            {
+                output = $"\nYour {attackingPiece.GetName()} met its match. Both attacker and defender were removed from the board.\n";
+                // if they're equal, kill them both
+                Battlefields[PlayerToggle].Grid[futureLocation].KillPiece();
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[PlayerToggle].Grid[futureLocation] = backfillPiece;
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation] = backfillPiece;
+
+                // add it to the killed pieces list
+                Battlefields[PlayerToggle].PiecesKilled.Add(attackingPiece);
+                Battlefields[GetOppositePlayerNumber()].PiecesKilled.Add(defendingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Both pieces lost");
+
+                return output;
+            }
+            // if the attacker is stronger
+            else if ((attackingPiece.GetRank() * defendingPiece.GetForceMultiplier()) > (defendingPiece.GetRank() * attackingPiece.GetForceMultiplier()))
+            {
+                output = $"\nYour {attackingPiece.GetName()} is victorious! The enemy piece has been removed from the board.\n";
+                // if the attacker wins, kill the defender
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[GetOppositePlayerNumber()].Grid[futureLocation] = backfillPiece; 
+
+                // add it to the killed pieces list
+                Battlefields[GetOppositePlayerNumber()].PiecesKilled.Add(defendingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Attacker won");
+
+                return output;
+            }
+            // lets do if the attacker is weaker
+            else if ((attackingPiece.GetRank() * defendingPiece.GetForceMultiplier()) < (defendingPiece.GetRank() * attackingPiece.GetForceMultiplier()))
+            {
+                output = $"\nYour {attackingPiece.GetName()} lost its skirmish and has fallen.\n";
+                // if the attacker is weaker, kill them
+                Battlefields[PlayerToggle].Grid[currentLocation].KillPiece();
+
+                // cover up the square once the kill happens
+                Battlefields[PlayerToggle].Grid[futureLocation] = backfillPiece;
+
+                // add it to the killed pieces list
+                Battlefields[PlayerToggle].PiecesKilled.Add(attackingPiece);
+
+                Log.AddToLog(Battlefields[PlayerToggle].PlayerName, futureLocation, attackingPiece, defendingPiece, "Defender won");
+
+                return output;
+            }
+            return "Something went wrong.";
+        }
+
+        /// <summary>
+        /// If the flag is captured during an attack, this method is triggered
+        /// </summary>
+        /// <returns>Returns true if the opposing team's flag is captured, otherwise false.</returns>
+        public bool CombatVictory()
+        {
+            if (Victor != -1 && Battlefields[GetOppositePlayerNumber()].Army[0].GetLifeStatus() == false)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Forfeit protocol. When called, it updates the Victor property with the winning player's index number
         /// </summary>
@@ -240,6 +402,7 @@ namespace Generals.Classes
         {
             // if the player toggle is zero, meaning player one, they are forfeiting
             // so return "Two"
+            UpdateVictoryMethod($"The game was forfeit by {Battlefields[PlayerToggle].PlayerName}");
             if (PlayerToggle == 0)
             {
                 Victor = 1;
@@ -247,8 +410,13 @@ namespace Generals.Classes
             else
             {
                 Victor = 0;
-            }
+            } 
+            return true;
+        }
 
+        public bool UpdateVictoryMethod(string victoryMethod)
+        {
+            VictoryMethod = victoryMethod;
             return true;
         }
     }

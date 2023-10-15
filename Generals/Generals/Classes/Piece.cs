@@ -111,7 +111,7 @@ namespace Generals.Classes
         // so no user can input values and make a custom deck
         public Piece(int rank)
         {
-            if (rank >= -3 && rank <= 12) // only create if accurate value supplied for ranks 5* to flag
+            if (rank >= -3 && rank <= 13) // only create if accurate value supplied for ranks 5* to flag
             {
                 Rank = rank;
             }
@@ -179,18 +179,18 @@ namespace Generals.Classes
             { -2, "Flag" },
             { -1, "Spy" },
             { 0, "Private" },
-            { 1, "Sergeant" },
-            { 2, "Second Lieutenant" },
-            { 3, "First Lieutenant" },
-            { 4, "Captain" },
-            { 5, "Major" },
-            { 6, "Lieutenant Colonel" },
-            { 7, "Colonel" },
-            { 8, "* General" },
-            { 9, "** General" },
-            { 10, "*** General" },
-            { 11, "**** General" },
-            { 12, "***** General" }
+            { 2, "Sergeant" },
+            { 3, "Second Lieutenant" },
+            { 4, "First Lieutenant" },
+            { 5, "Captain" },
+            { 6, "Major" },
+            { 7, "Lieutenant Colonel" },
+            { 8, "Colonel" },
+            { 9, "* General" },
+            { 10, "** General" },
+            { 11, "*** General" },
+            { 12, "**** General" },
+            { 13, "***** General" }
         };
 
         public Dictionary<int, string> RankToDisplayName = new Dictionary<int, string>()
@@ -199,18 +199,18 @@ namespace Generals.Classes
             { -2, " Flag! " },
             { -1, "  Spy  " },
             { 0, "  Pte  " },
-            { 1, " Sarge " },
-            { 2, " 2.Lie " },
-            { 3, " 1.Lie " },
-            { 4, "  Cap  " },
-            { 5, " Major " },
-            { 6, " L.Col " },
-            { 7, "  Col  " },
-            { 8, "   *   " },
-            { 9, "  * *  " },
-            { 10, "  ***  " },
-            { 11, " ** ** " },
-            { 12, " ***** " }
+            { 2, " Sarge " },
+            { 3, " 2. Lt " },
+            { 4, " 1. Lt " },
+            { 5, "  Cap  " },
+            { 6, " Major " },
+            { 7, " L.Col " },
+            { 8, "  Col  " },
+            { 9, "   *   " },
+            { 10, "  * *  " },
+            { 11, "  ***  " },
+            { 12, " ** ** " },
+            { 13, " ***** " }
         };
 
         // need a ToString override so I know what I'm working with
