@@ -17,6 +17,10 @@ namespace Generals.Classes
         // player toggle. player0 (playerOne) is false, player1 (playerTwo) is true
         private int PlayerToggle { get; set; } = 0;
 
+        // victor property
+        // which player has won
+        public int Victor { get; private set; } = -1;
+
         // Constructor
         // create battlefields and add it to the dictionary with the keys
         // add the players to the queue
@@ -42,6 +46,15 @@ namespace Generals.Classes
         public int GetPlayerNumber()
         {
             return PlayerToggle;
+        }
+
+        /// <summary>
+        /// Helper method to get the opposite player number's, so I don't have to keep calling the Game object
+        /// </summary>
+        /// <returns>If player one selected, returns 1 (player two) and vice versa.</returns>
+        public int GetOppositePlayerNumber()
+        {
+            return PlayerToggle == 0 ? 1 : 0;             
         }
 
         /// <summary>
@@ -101,28 +114,142 @@ namespace Generals.Classes
             return Battlefields[PlayerToggle].SetupChangePieceLocation(locationChosen);
         }
 
+        /// <summary>
+        /// Gets a list of deaths from the board, based on the current player
+        /// </summary>
+        /// <returns>String list of deaths</returns>
         public string GetListOfDeaths()
         {
-            return Battlefields[PlayerToggle].
+            return Battlefields[PlayerToggle].ListOfDeaths();
         }
 
         /// <summary>
-        /// Breaks the Phase 3 loop and declares victory if a team's flag reaches the other side
-        /// Checks both player's battlefields for victory
+        /// Calls the board to confirm the location selected has a valid piece to action
         /// </summary>
-        /// <returns>String of which player has won</returns>
-        public string DeclareReachedTheOtherSideVictory()
+        /// <param name="location"></param>
+        /// <returns>The same location given, if valid, otherwise bubbles up an exception</returns>
+        public string ConfirmLocationHasValidPiece(string location)
         {
-            // has to be the player's turn, their flag has to be alive, and the playerOneVictoryCount has to be 1
-            if (PlayerToggle == 0 && Battlefields[PlayerToggle].DeclareReachedOtherSideVictory() == true)
+            return Battlefields[PlayerToggle].ConfirmLocationHasValidPiece(location);
+        }
+
+        /// <summary>
+        /// Calls the board to confirm the location selected has a valid piece to action
+        /// and that the move won't bump into an existing piece
+        /// </summary>
+        /// <param name="currentLocation"></param>
+        /// <param name="direction"></param>
+        /// <returns>The same location given, if valid, otherwise bubbles up an exception</returns>
+        public string ConfirmMoveIsValid(string currentLocation, string direction)
+        {
+            return Battlefields[PlayerToggle].ConfirmMoveIsValid(currentLocation, direction);
+        }
+
+        public string MakeMove(string currentLocation, string futureLocation)
+        {
+            // this completes the action
+            string pieceMoved = Battlefields[PlayerToggle].BoardExecuteMove(currentLocation, futureLocation);
+
+            // now work only with futureLocation as that is the new location of the piece
+            string returnText = CheckFlagImmediateVictory(pieceMoved, futureLocation);
+            return returnText;
+        }
+
+        /// <summary>
+        /// Checks for immediate victory in the event a flag gets to the final row and doesn't have neighbours
+        /// </summary>
+        /// <param name="pieceMoved"></param>
+        /// <param name="location"></param>
+        /// <returns>String "Immediate" if victory, "Wait" if the Flag reached the end, "Other" for other pieces. Updates the victor to the player number, if immediate</returns>
+        private string CheckFlagImmediateVictory(string pieceMoved, string location)
+        {
+            // checking immediate victory conditions
+            if (pieceMoved == "Flag" && CheckFlagLocation())
             {
-                return "One";
+                // if both of these are true, then the flag is now at the final row
+                // won't work if the flag isn't at the  
+
+                // check if the pieces next to flag are empty
+                string victoryCheck = Battlefields[GetOppositePlayerNumber()].CheckFlagNeighbours(location);
+
+                if (victoryCheck == "Immediate")
+                {
+                    // if blank neighbours, immediate victory
+                    Victor = PlayerToggle;
+                    return "Immediate";
+                }
+                else
+                {
+                    // if has one neighbour, wait
+                    // increment the counter
+                    Battlefields[PlayerToggle].IncrementVictoryCounter();
+                    return "Wait";
+                }
             }
-            else if (PlayerToggle == 1 && Battlefields[PlayerToggle].DeclareReachedOtherSideVictory() == true)
+            // if other piece moved, don't really care
+            return "Other";
+        }
+
+        /// <summary>
+        /// Checks the location of the flag to see if it's at the final row for that player
+        /// </summary>
+        /// <returns>True if flag for that player is at the end</returns>
+        private bool CheckFlagLocation()
+        {
+            // board sends back the last position
+            if (PlayerToggle == 0)
             {
-                return "Two";
+                string lastCharOfFlagLocation = Battlefields[PlayerToggle].BoardCheckFlagLocation();
+
+                // for player one, check if their flag is in the end row, 8
+                if (lastCharOfFlagLocation == "8")
+                {
+                    return true;
+                }
             }
-            return "";
+            if (PlayerToggle == 1)
+            {
+                string lastCharOfFlagLocation = Battlefields[PlayerToggle].BoardCheckFlagLocation();
+
+                // for player two, check if their flag is in the end row, 1
+                if (lastCharOfFlagLocation == "1")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool CheckFlagWaitingVictory()
+        {
+            // if the flag is in the right position, the increment has been upped to 1
+            if (CheckFlagLocation() && Battlefields[PlayerToggle].DeclareReachedOtherSideVictory())
+            {
+                //declare a victor
+                Victor = PlayerToggle;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Forfeit protocol. When called, it updates the Victor property with the winning player's index number
+        /// </summary>
+        /// <returns>Always returns true.</returns>
+        public bool ForfeitProtocol()
+        {
+            // if the player toggle is zero, meaning player one, they are forfeiting
+            // so return "Two"
+            if (PlayerToggle == 0)
+            {
+                Victor = 1;
+            }
+            else
+            {
+                Victor = 0;
+            }
+
+            return true;
         }
     }
 }

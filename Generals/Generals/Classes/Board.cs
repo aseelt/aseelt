@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Generals.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -31,7 +32,7 @@ namespace Generals.Classes
         // i don't recall how to make this private and provide a copy - it works for now
         // the the values are blank, waiting to be filled
         // derived when the class is created
-        // all 64 positions in one dictionary
+        // all 72 positions in one dictionary
         public Dictionary<string, Piece> Grid = new Dictionary<string, Piece>();
 
 
@@ -157,7 +158,6 @@ namespace Generals.Classes
 
             if (Grid[location].GetName() == "Blank")
             {
-                // this code is a hot mess
                 // for the grid location, if blank
                 // then place that peice's not on board location there
                 Grid[location] = PiecesNotOnBoard[piece - 1];
@@ -193,7 +193,7 @@ namespace Generals.Classes
             // if the player toggle is 1, grid references are 5,6,7 x9
 
             string piecePlacementMessage = "The following pieces have randomly been placed on the board. Please adjust as necessary.\n";
-             
+
             List<string> randomizedBlankLocations = new List<string>(LocationRandomizer(playerToggle));
 
             // then assign locations to the pieces not on the board
@@ -202,12 +202,12 @@ namespace Generals.Classes
             {
                 // go through the pieces not on board
                 // find it's place in the shuffled piece's list, and return that number 
-                
+
                 // need a 1 because setup place piece board takes user input of actual value and changes it to zero based indexing
                 piecePlacementMessage += SetupPlacePieceBoard(1, randomizedBlankLocations[0]);
-                
+
                 // remove from shuffledPieces and blankLocations lists so we don't have conflicts
-                randomizedBlankLocations.RemoveAt(0);        
+                randomizedBlankLocations.RemoveAt(0);
             }
             return piecePlacementMessage;
         }
@@ -230,7 +230,7 @@ namespace Generals.Classes
             int k;
 
             //if player toggle is 0, want positions 0, 1, 2 and 9x multiples of it
-            if (playerToggle == 0) 
+            if (playerToggle == 0)
             {
                 // pull the blank locations from the grid and put them in the list
                 //pull the first 24 positions out of the grid reference
@@ -239,9 +239,9 @@ namespace Generals.Classes
                 j = 1;
                 k = 2;
 
-                LocationChooserHelper(selectedLocations,i);
-                LocationChooserHelper(selectedLocations,j);
-                LocationChooserHelper(selectedLocations,k); 
+                LocationChooserHelper(selectedLocations, i);
+                LocationChooserHelper(selectedLocations, j);
+                LocationChooserHelper(selectedLocations, k);
             }
             else //otherwise, want positions 5, 6, 7 and 8x multiples of it
             {
@@ -281,7 +281,7 @@ namespace Generals.Classes
                 if (Grid[location].GetRank() == -3)
                 {
                     //if empty, add it to the selected locations list
-                    selectedLocations.Add(location); 
+                    selectedLocations.Add(location);
                 }
             }
             return selectedLocations;
@@ -309,13 +309,296 @@ namespace Generals.Classes
         {
             string output = $"\nYou have lost the following {PiecesKilled.Count} pieces:\n\n";
 
-            for (int i = 0; i < PiecesKilled.Count; i++)
+            if (PiecesKilled.Count == 0)
             {
-                output += $"{i + 1}. {PiecesKilled[i].GetName()}\n";
+                return "You have not lost any pieces... yet...";
+            }
+            else
+            {
+                for (int i = 0; i < PiecesKilled.Count; i++)
+                {
+                    output += $"{i + 1}. {PiecesKilled[i].GetName()}\n";
+                }
             }
             return output;
         }
 
+        /// <summary>
+        /// Checks whether the location has a playable (i.e. not blank) piece
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns>Returns back the location if the piece is playable, otherwise throws exception</returns>
+        public string ConfirmLocationHasValidPiece(string location)
+        {
+            if (Grid[location].GetName() != "Blank")
+            {
+                return location;
+            }
+            else
+            {
+                throw new LocationChosenWrongException();
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the move the player is trying to make is valid (i.e. won't send a piece off the board)
+        /// Also checks it won't bump into an existing piece
+        /// </summary>
+        /// <param name="currentLocation"></param>
+        /// <param name="direction"></param>
+        /// <returns>Returns back the future location if the move is valid, otherwise throws exception</returns>
+        public string ConfirmMoveIsValid(string currentLocation, string direction)
+        {
+            string futureLocation = "";
+            // future locations can affect the grid reference index position in the following ways:
+            // Up (-1)
+            // Down (+1)
+            // Left (-8)
+            // Right (+8)
+            // have to make sure the direction results in a valid location (not off the board)
+            // have to make sure up/down doesn't result in crossing rows (i.e. from row 8 moves down to next column's row 1)
+            // have to make sure we don't bump into an existing peice
+
+            // check the direction is valid first 
+            switch (direction)
+            {
+                case "U":
+                    futureLocation = MoveUpCheckHelper(currentLocation);
+                    break;
+                case "D":
+                    futureLocation = MoveDownCheckHelper(currentLocation);
+                    break;
+                case "L":
+                    futureLocation = MoveLeftCheckHelper(currentLocation);
+                    break;
+                case "R":
+                    futureLocation = MoveRightCheckHelper(currentLocation);
+                    break;
+            }
+            // check if we're bumping into another piece
+            if (ConfirmLocationIsEmpty(futureLocation))
+            {
+                return futureLocation;
+            }
+            else
+            {
+                throw new DirectionChosenWrongException();
+            }
+        }
+
+        /// <summary>
+        /// Helper for ConfirmMoveIsValid method. Checks if the Up direction is a valid move
+        /// </summary>
+        /// <param name="currentLocation"></param> 
+        /// <returns>Returns the future location coordinates if the move is valid. Otherwise, throws exception.</returns>
+        private string MoveUpCheckHelper(string currentLocation)
+        {
+            string futureLocation = "";
+            //extract the last character of the current location
+            string lastCharacter = currentLocation.Substring(1);
+
+            // if the last character is a 1, the location is already the top row
+            // so only return the future location if it's not a 1
+            if (lastCharacter != "1")
+            {
+                // find the index position of the current location
+                int indexOfCurrentLocation = Array.IndexOf(GridReference, currentLocation);
+
+                // get the future location's index by subtracting 1
+                futureLocation = GridReference[indexOfCurrentLocation - 1];
+            }
+            else
+            {
+                throw new DirectionChosenWrongException();
+            }
+            return futureLocation;
+        }
+
+        /// <summary>
+        /// Helper for ConfirmMoveIsValid method. Checks if the Down direction is a valid move
+        /// </summary>
+        /// <param name="currentLocation"></param> 
+        /// <returns>Returns the future location coordinates if the move is valid. Otherwise, throws exception.</returns>
+        private string MoveDownCheckHelper(string currentLocation)
+        {
+            string futureLocation = "";
+            //extract the last character of the current location
+            string lastCharacter = currentLocation.Substring(1);
+
+            // if the last character is a 8, the location is already the bottom row
+            // so only return the future location if it's not a 8
+            if (lastCharacter != "8")
+            {
+                // find the index position of the current location
+                int indexOfCurrentLocation = Array.IndexOf(GridReference, currentLocation);
+
+                // get the future location's index by subtracting 1
+                futureLocation = GridReference[indexOfCurrentLocation + 1];
+            }
+            else
+            {
+                throw new DirectionChosenWrongException();
+            }
+            return futureLocation;
+        }
+
+        /// <summary>
+        /// Helper for ConfirmMoveIsValid method. Checks if the Left direction is a valid move
+        /// </summary>
+        /// <param name="currentLocation"></param> 
+        /// <returns>Returns the future location coordinates if the move is valid. Otherwise, throws exception.</returns>
+        private string MoveLeftCheckHelper(string currentLocation)
+        {
+            string futureLocation = "";
+            // find the index position of the current location
+            int indexOfCurrentLocation = Array.IndexOf(GridReference, currentLocation);
+
+            // if lowering the index position by 8 (a column left) will still be zero and above, allow
+            if ((indexOfCurrentLocation - 8) >= 0)
+            {
+                // get the future location's index by subtracting 1
+                futureLocation = GridReference[indexOfCurrentLocation - 8];
+            }
+            else
+            {
+                throw new DirectionChosenWrongException();
+            }
+            return futureLocation;
+        }
+
+        /// <summary>
+        /// Helper for ConfirmMoveIsValid method. Checks if the Right direction is a valid move
+        /// </summary>
+        /// <param name="currentLocation"></param> 
+        /// <returns>Returns the future location coordinates if the move is valid. Otherwise, throws exception.</returns>
+        private string MoveRightCheckHelper(string currentLocation)
+        {
+            string futureLocation = "";
+            // find the index position of the current location
+            int indexOfCurrentLocation = Array.IndexOf(GridReference, currentLocation);
+
+            // if increasing the index position by 8 (a column left) will still be 71 and below, allow
+            if ((indexOfCurrentLocation + 8) <= 71)
+            {
+                // get the future location's index by subtracting 1
+                futureLocation = GridReference[indexOfCurrentLocation + 8];
+            }
+            else
+            {
+                throw new DirectionChosenWrongException();
+            }
+            return futureLocation;
+        }
+
+        /// <summary>
+        /// Checks whether the location is empty (i.e. doesn't have a piece already)
+        /// </summary>
+        /// <param name="futureLocation"></param>
+        /// <returns>Returns true if the location is empty, otherwise false</returns>
+        private bool ConfirmLocationIsEmpty(string futureLocation)
+        {
+            return Grid[futureLocation].GetName() == "Blank";
+        }
+
+        /// <summary>
+        /// Makes the move, once other methods have confirmed the move is valid
+        /// Sends back the piece's name - if Flag or other
+        /// </summary>
+        /// <param name="currentLocation"></param>
+        /// <param name="futureLocation"></param>
+        /// <returns>Returns true if the move has occurred, otherwise throws exception</returns>
+        public string BoardExecuteMove(string currentLocation, string futureLocation)
+        {
+            // grab the piece in the current location
+            Piece holdingPiece = Grid[currentLocation];
+
+            // double check the future location is empty because why not
+            if (ConfirmLocationIsEmpty(futureLocation))
+            {
+                // make the future location the current location's peice
+                Grid[futureLocation] = holdingPiece;
+
+                // replace the old position with a blank piece
+                Grid[currentLocation] = new Piece(-3);
+
+                if (holdingPiece.GetName() == "Flag")
+                {
+                    return "Flag";
+                }
+                return "Other";
+
+                //TODO create log of moves
+            }
+            else
+            {
+                throw new EntryWrongException();
+            }
+        }
+
+        /// <summary>
+        /// Gets the Flag's location
+        /// </summary>
+        /// <returns>Returns the flag's location.</returns>
+        public string BoardCheckFlagLocation()
+        {
+            // container for the flag location
+            string flagLocation = "";
+
+            // find what that location is
+            foreach (KeyValuePair<string, Piece> item in Grid)
+            {
+                if (item.Value.GetName() == "Flag")
+                {
+                    flagLocation = item.Key;
+                }
+            }
+            // extract the last character and return it
+            return flagLocation.Substring(1);
+        }
+
+        /// <summary>
+        /// Checks the neighbours of the Flag to see if they are empty
+        /// Inclusive of if the Flag is in a corner
+        /// If both empty, leads to immediate victory
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns>Returns true if the Flag is at the other end of the board (checked in Game) and neighbours are blank.</returns>
+        public string CheckFlagNeighbours(string location)
+        {
+            // get the index position of the right and left locations
+            // they may throw out of bounds, that's okay
+            Piece leftNeighbour;
+            Piece rightNeighbour;
+
+            try
+            {
+                string leftNeighbourKey = MoveLeftCheckHelper(location);
+                leftNeighbour = Grid[leftNeighbourKey];
+            }
+            catch (Exception)
+            {
+                // return blank if there's an exception, that's okay
+                leftNeighbour = new Piece(-3);
+            }
+
+            try
+            {
+                string rightNeighbourKey = MoveRightCheckHelper(location);
+                rightNeighbour = Grid[rightNeighbourKey];
+            }
+            catch (Exception)
+            {
+                // return blank if there's an exception, that's okay
+                rightNeighbour = new Piece(-3);
+            }
+
+            // both left and right neighbour pieces need to have the name blank
+            if (leftNeighbour.GetName() == "Blank" && rightNeighbour.GetName() == "Blank")
+            {
+                return "Immediate";
+            }
+            return "Wait";
+        }
 
         /// <summary>
         /// Increments the victory counter for each player.
@@ -326,7 +609,7 @@ namespace Generals.Classes
         public bool IncrementVictoryCounter()
         {
             VictoryCount++;
-            
+
             return true;
         }
 

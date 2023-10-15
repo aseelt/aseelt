@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,14 +32,14 @@ namespace Generals.Classes
             //TODO add more fluff later
             //TODO ASCII art
             //TODO method to show it in the center of the screen, press any key to continue, wipe
-            
+
             Console.WriteLine("Welcome to the Game of the Generals");
 
             //TODO give option to see the help menu or to play
 
             //phase 1, game setup
             Phase1GameSetup();
-            
+
             //Game.TogglePlayers();
             //Console.WriteLine(Game.BattlefieldDisplayGame());
 
@@ -49,15 +50,10 @@ namespace Generals.Classes
 
             // instead use a method in battlefield to pull the piece out to be manipulated
             // then in piece, manipulate the position per placement, movement, or attack
-            //BattlefieldDisplay();
 
             Phase2SetupPieces();
-            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
-            Console.ReadKey();
-            Game.TogglePlayers();
-            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+            Phase3MovesAndCombat();
 
-            //int pieceChosen = SetupAskForPiece($"Please enter a number 1-{Game.Battlefields[PlayerToggle].PiecesNotOnBoard.Count} to select a piece: ");
 
             return false;
         }
@@ -75,7 +71,7 @@ namespace Generals.Classes
         /// Helper method to get the player number, so I don't have to keep calling the Game object
         /// </summary>
         /// <returns>Returns 0 for the first player, 1 for the second player</returns>
-        private int GetPlayerNumberFromBoard()
+        private int GetPlayerNumberFromGame()
         {
             return Game.GetPlayerNumber();
         }
@@ -86,7 +82,7 @@ namespace Generals.Classes
         /// <returns>If player one selected, returns 1 (player two) and vice versa.</returns>
         private int GetOppositePlayerNumberFromBoard()
         {
-            return Game.GetPlayerNumber() == 0 ? 1 : 0;
+            return Game.GetOppositePlayerNumber();
         }
 
         /// <summary>
@@ -99,6 +95,7 @@ namespace Generals.Classes
             Console.Write(message);
             return Console.ReadLine().Trim();
         }
+
         /// <summary>
         /// Asks for a string with the entry on the same line.
         /// </summary>
@@ -248,7 +245,7 @@ namespace Generals.Classes
         /// </summary>
         /// <returns>Prints directly to the console a helper menu. Always returns true</returns>
         private bool Phase0Introduction()
-        { 
+        {
             bool keepGoing = true;
             do
             {
@@ -303,7 +300,7 @@ namespace Generals.Classes
 
         //TODO fill these out
         private bool MenuOption1Background()
-        { 
+        {
             Console.WriteLine("\nOption1");
             return true;
         }
@@ -416,7 +413,7 @@ namespace Generals.Classes
         /// <summary>
         /// Master Method for Phase 2. Sets up initial piece placement, for both Player One and Two
         /// </summary>
-        /// <returns>Bool true always...</returns>
+        /// <returns>Bool true always</returns>
         private bool Phase2SetupPieces()
         {
             //place piece
@@ -445,7 +442,7 @@ namespace Generals.Classes
                 // all pieces placed
                 // ask them if they want to change any pieces
                 // has to be a separate loop that asks when initial placement is all done
-                Console.WriteLine($"{Game.Battlefields[GetPlayerNumberFromBoard()].PlayerName}, it's time to place your pieces on the board.");
+                Console.WriteLine($"{Game.Battlefields[GetPlayerNumberFromGame()].PlayerName}, it's time to place your pieces on the board.");
 
                 do
                 {
@@ -463,7 +460,7 @@ namespace Generals.Classes
                             // do that in the board
                             // call the game
                             Console.WriteLine(Game.SetupPiecePlacementRandomizerGame());
-                            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+                            Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromGame()));
                         }
                         else
                         {
@@ -471,11 +468,11 @@ namespace Generals.Classes
                             Console.WriteLine(Game.SetupPlacePieceGame(piece, location));
                         }
 
-                    } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count > 0);
+                    } while (Game.Battlefields[GetPlayerNumberFromGame()].PiecesNotOnBoard.Count > 0);
 
                     SetupChangePieceLocation();
 
-                } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count > 0);
+                } while (Game.Battlefields[GetPlayerNumberFromGame()].PiecesNotOnBoard.Count > 0);
 
                 // once that is done, change the players
                 TogglePlayersInGame();
@@ -484,7 +481,7 @@ namespace Generals.Classes
                 setupCount++;
 
 
-                ContinueAndClear("Your piece placement is complete. Press any key to clear your screen before handing over the console to your opponent." +
+                ContinueAndClear("\nYour piece placement is complete. Press any key to clear your screen before handing over the console to your opponent." +
                     "\n\nNO PEEKING!");
                 ContinueAndClear("This screen has been provided to ensure operational security for your army.\nPlease press any key to continue.");
 
@@ -518,8 +515,7 @@ namespace Generals.Classes
                 try
                 {
                     // this is slightly clunky for the player - there's a lot of typing and entry
-                    // but it's simpler in the long run
-                    //TODO future enhancement - randomize piece placement
+                    // but it's simpler in the long run 
                     Console.Write("\n(Type '99' to view the grid) \n(Type '88' to view the list of pieces to place) " +
                         "\n(Type '77' to have the game assign the remaining pieces)" +
                         "\n(Type '00' to view the help menu)" +
@@ -531,7 +527,7 @@ namespace Generals.Classes
                     // if so, breaks the loop and returns the piece for use
                     if (pieceChosen == 99)
                     {
-                        Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+                        Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromGame()));
                     }
                     else if (pieceChosen == 88)
                     {
@@ -545,7 +541,7 @@ namespace Generals.Classes
                     {
                         Phase0Introduction();
                     }
-                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count))
+                    else if (pieceChosen >= (1 - 1) & pieceChosen <= (Game.Battlefields[GetPlayerNumberFromGame()].PiecesNotOnBoard.Count))
                     {
                         return pieceChosen;
                     }
@@ -558,12 +554,12 @@ namespace Generals.Classes
                 {
                     Console.WriteLine(pcwe.Message);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                 }
 
-            } while (Game.Battlefields[GetPlayerNumberFromBoard()].PiecesNotOnBoard.Count != 0);
+            } while (Game.Battlefields[GetPlayerNumberFromGame()].PiecesNotOnBoard.Count != 0);
 
             return 0;
         }
@@ -581,7 +577,7 @@ namespace Generals.Classes
                 try
                 {
                     string locationChosen;
-                    if (GetPlayerNumberFromBoard() == 0)
+                    if (GetPlayerNumberFromGame() == 0)
                     {
                         locationChosen = AskForStringUpperCase("Please enter a grid location (e.g. A1, B2, C5) in rows 1-3 to place your piece: ");
                     }
@@ -590,14 +586,14 @@ namespace Generals.Classes
                         locationChosen = AskForStringUpperCase("Please enter a grid location (e.g. A6, B7, C8) in rows 6-8 to place your piece: ");
                     }
 
-                    if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
+                    if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[GetPlayerNumberFromGame()].GridReference.Contains(locationChosen))
                     {
-                        if (GetPlayerNumberFromBoard() == 0 && (locationChosen.EndsWith("1") || locationChosen.EndsWith("2") || locationChosen.EndsWith("3")))
+                        if (GetPlayerNumberFromGame() == 0 && (locationChosen.EndsWith("1") || locationChosen.EndsWith("2") || locationChosen.EndsWith("3")))
                         {
                             keepGoing = false;
                             return locationChosen;
                         }
-                        else if (GetPlayerNumberFromBoard() == 1 && (locationChosen.EndsWith("6") || locationChosen.EndsWith("7") || locationChosen.EndsWith("8")))
+                        else if (GetPlayerNumberFromGame() == 1 && (locationChosen.EndsWith("6") || locationChosen.EndsWith("7") || locationChosen.EndsWith("8")))
                         {
                             keepGoing = false;
                             return locationChosen;
@@ -616,7 +612,7 @@ namespace Generals.Classes
                 {
                     Console.WriteLine(lcwe.Message);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                 }
@@ -657,16 +653,16 @@ namespace Generals.Classes
                             // if so, breaks the loop and returns the piece for use
                             if (locationChosen == "99")
                             {
-                                Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromBoard()));
+                                Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromGame()));
                             }
                             else if (locationChosen == "88")
                             {
                                 Console.WriteLine(SetupPiecesList());
                             }
-                            else if (Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
+                            else if (Game.Battlefields[GetPlayerNumberFromGame()].GridReference.Contains(locationChosen))
                             {
                                 // throws exception if you try and choose an empty space
-                                if (Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen].GetName() == "Blank")
+                                if (Game.Battlefields[GetPlayerNumberFromGame()].Grid[locationChosen].GetName() == "Blank")
                                 {
                                     throw new PieceChosenWrongException();
                                 }
@@ -691,7 +687,7 @@ namespace Generals.Classes
                         {
                             Console.WriteLine(lcwe.Message);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                         }
@@ -717,27 +713,26 @@ namespace Generals.Classes
         /// <returns></returns>
         private bool Phase3MovesAndCombat()
         {
-            // check if their ReachedTheOtherSide victory condition is 1 (has to be there for a full turn of the other team)
+            // check if their ReachedTheOtherSide victory condition is 1 (has to be there for a full turn of the other team) y
             //      And flag has to be alive (it can be killed by the opposing team)
             //      if so, break loop and declare victory
-            // ask for a location
+            // ask for a current location y
             //      00 for rules... 
-            //      66 to see own killed pieces - has 
+            //      66 to see own killed pieces 
             //      ff for forefeit
-            // store as current location
-            // store prospective location
-            // check if position selected is valid
-            //      validate here
-            // check if position has a selectable piece - handle this at the board level
+            // check if position has a selectable piece - handle this at the board level y
             //      return true/false
-            // if true, ask for a direction
+            //      if false, loop back
+            // store as current location y 
+            // ask for a move up/down/left/right y
+            //      check if prospective position selected is valid - handle this at the board level 
+            //      check if move doesn't collide with existing piece on team - handle this at the board level
             //      if false, loop back            
-            // check if move doesn't send a piece off the board - handle this at the board level
-            // check if move doesn't collide with existing piece on team - handle this at the board level
+            // store future location y 
             //      return true/false
             //      if any false, loop back
             //      if both true, store new location, grab piece from current location and continue
-            // if all good by here, you have a piece in hand, location to send it to, current location. Then:
+            // if all good by here, you have a piece in hand, location to send it to, current location. Then: y
             //      check if it collides with piece of other player - handle at game level
             //          if it does, return true, if not, false
             //          if true, attack protocol - handle this at the game level
@@ -750,13 +745,13 @@ namespace Generals.Classes
             //                          Break Phase 3 loop
             //                      Log attack, pieces, outcome
             //                  If N, loop back to start and ask for a location
-            //          if false, move protocol - handle at the board level
-            //              Update desired location with piece
-            //              Update current location with blank piece
+            //          if false, move protocol - handle at the board level y
+            //              Update desired location with piece y
+            //              Update current location with blank piece y
             //              Log move, pieces, moves
             //                  If player 0 flag reaches row 8, update "ReachedTheOtherSide" victory condition to 1
             //                  If player 1 flag reaches row 1, update "ReachedTheOtherSide" victory condition to 1
-            //                      If either player's flag reaches the end and the spaces either side are blank, declare immediate victory
+            //                      If either player's flag reaches the end and the spaces either side are blank, declare immediate victory y
             //                          Need to have an exception that returns ok if the flag reaches the end in a corner and the next space over doesn't exist
             //                  Break loop
             // If those all resolve, clear screen (twice...) and toggle player
@@ -764,18 +759,77 @@ namespace Generals.Classes
             do
             {
                 // check if a player has met the conditions for flag reaching the other side victory
-                if (Game.DeclareReachedTheOtherSideVictory() != "")
+                if (Game.CheckFlagWaitingVictory())
                 {
                     victory = true;
+                    break;
+                }
+                Console.WriteLine($"{Game.Battlefields[GetPlayerNumberFromGame()]}, it is time to make your move!\n");
+                Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromGame()));
+                try
+                {
+                    // no loop here, you want this all to play out
+                    string currentLocation;
+                    string futureLocation;
+                    do
+                    {
+                        // need a loop in case the user gets stuck selecting a piece they can't move
+                        currentLocation = AskForLocation();
+                        futureLocation = AskForMove(currentLocation);
+                    } while (futureLocation == "X");
+
+                    // grab the current piece
+                    Piece currentPiece = Game.Battlefields[GetPlayerNumberFromGame()].Grid[currentLocation];
+
+                    // check if the other player has a piece in that future location
+                    // if it's blank, make the move
+                    // i.e. if it's not blank, then you have a combat situation
+                    if (Game.Battlefields[GetOppositePlayerNumberFromBoard()].Grid[futureLocation].GetName() != "Blank")
+                    {
+                        // combat pathway
+                    }
+                    else // move pathway
+                    {
+                        string victoryCheck = Game.MakeMove(currentLocation, futureLocation);
+
+                        // TODO log piece move
+
+                        // print the move
+                        Console.WriteLine($"\nYour {currentPiece.GetName()} has been moved from {currentLocation} to {futureLocation}.\n");
+
+                        // check the flag location
+                        if (victoryCheck == "Immediate")
+                        {
+                            victory = true;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
                 }
 
-                string currentLocation = "";
-                string futureLocation = "";
+
+                // if you get here, your turn is done
+                // once that is done, change the players
+                TogglePlayersInGame();
+                ContinueAndClear("Your moves for this round are complete. Press any key to clear your screen before handing over the console to your opponent." +
+                    "\n\nNO PEEKING!");
+                ContinueAndClear("This screen has been provided to ensure operational security for your army.\nPlease press any key to continue.");
 
             } while (!victory);
 
             return true;
         }
+         
+
+
+
+        /// <summary>
+        /// Asks for a location from the user
+        /// </summary>
+        /// <returns>The location as a string</returns>
         private string AskForLocation()
         {
             bool keepGoing = true;
@@ -785,45 +839,42 @@ namespace Generals.Classes
                 {
                     string locationChosen;
 
-                    locationChosen = AskForStringUpperCase("\n(Type '66' to view a list of your casualties)" +
+                    // forfeit has to live here
+                    locationChosen = AskForStringUpperCase("\n(Type '99' to view the grid) " +
+                        "\n(Type '66' to view a list of your casualties)" +
                         "\n(Type 'FF' to forfeit the game)" +
                         "\n(Type '00' to view the help menu)" +
                         "\n\nPlease enter the location of the piece you would like to move: ");
 
-                    if (!string.IsNullOrEmpty(locationChosen) && Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
+                    if (locationChosen == "99")
                     {
-                        if (locationChosen == "66")
+                        Console.WriteLine(BattlefieldDisplay(GetPlayerNumberFromGame()));
+                    }
+                    else if (locationChosen == "66")
+                    {
+                        Console.WriteLine(Game.GetListOfDeaths());
+                    }
+                    else if (locationChosen == "FF")
+                    {
+                        // forfeit is by the current player
+                        // means the other player gets to declare victory
+                        // exits this loop
+                        if (AreYouSure())
                         {
-                            Console.WriteLine(Game.GetListOfDeaths());
+                            Game.ForfeitProtocol();
+                            ContinueAndClear("You have forfeited this game!");
+                            keepGoing = false;
                         }
-                        else if (locationChosen == "FF")
-                        {
-                            //TODO forfeit protocol
-                        }
-                        else if (locationChosen == "00")
-                        {
-                            Phase0Introduction();
-                        }
-                        else if (Game.Battlefields[GetPlayerNumberFromBoard()].GridReference.Contains(locationChosen))
-                        {
-                            // throws exception if you try and choose an empty space
-                            if (Game.Battlefields[GetPlayerNumberFromBoard()].Grid[locationChosen].GetName() == "Blank")
-                            {
-                                throw new PieceChosenWrongException();
-                            }
-                            // by this point it should be a valid location
-                            // change that position's on board status to false
-                            // put the piece in that location back on the list
-                            // put a blank piece in that location
-                            // end the loop 
-                            
-                            //TODO I WAS HERE BEFORE I GOT SIDE TRACKED
-                            //keepGoingPiece = Game.SetupChangePieceLocation(locationChosen);
-                        }
-                        else
-                        {
-                            throw new LocationChosenWrongException();
-                        }
+                    }
+                    else if (locationChosen == "00")
+                    {
+                        Phase0Introduction();
+                    }
+                    else if (Game.Battlefields[GetPlayerNumberFromGame()].GridReference.Contains(locationChosen))
+                    {
+                        locationChosen = Game.ConfirmLocationHasValidPiece(locationChosen);
+                        keepGoing = false;
+                        return locationChosen;
                     }
                     else
                     {
@@ -834,7 +885,7 @@ namespace Generals.Classes
                 {
                     Console.WriteLine(lcwe.Message);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("You have entered an incorrect value. Please try again.\n");
                 }
@@ -843,6 +894,85 @@ namespace Generals.Classes
 
             return "";
         }
+
+        /// <summary>
+        /// Asks for a move direction from the user. 
+        /// Validates if it's possible based on direction (i.e. not off the board)
+        /// and if there is a conflicting friendly piece
+        /// </summary>
+        /// <param name="currentLocation"></param>
+        /// <returns>Returns the future location of the piece</returns>
+        private string AskForMove(string currentLocation)
+        {
+            bool keepGoing = true;
+            do
+            {
+                try
+                {
+                    string direction = AskForStringUpperCase("\nYou can move your piece (U)p, (D)own, (L)eft, or (R)ight? " +
+                        "\nEnter (x) to exit" +
+                        "\n\nWhich direction would you like to move your piece? ");
+
+                    // send the prospective move to the board with the current location
+                    // if it's okay, get back the future location coordinates
+                    if (direction == "U" || direction == "D" || direction == "L" || direction == "R")
+                    {
+                        string futurePosition = Game.ConfirmMoveIsValid(currentLocation, direction);
+                        keepGoing = false;
+                        return futurePosition;
+                    }
+                    else if (direction == "X")
+                    {
+                        keepGoing = false;
+                        return "X";
+                    }
+                }
+                catch (DirectionChosenWrongException dcwe)
+                {
+                    Console.WriteLine(dcwe.Message);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("You have entered an incorrect value. Please try again.\n");
+                }
+
+            } while (keepGoing);
+
+            return "";
+        }
+
+        /// <summary>
+        /// Asks for confirmation. Used in forfeit protocol and attack
+        /// </summary>
+        /// <returns>Returns true if confirmation of action</returns>
+        private bool AreYouSure()
+        {
+            string continuing = "\nReturning to the previous menu.\n";
+            try
+            {
+                string confirmation = AskForStringUpperCase("Are you sure? Y/N ");
+                if (confirmation == "Y")
+                {
+                    return true;
+                }
+                else if (confirmation == "N")
+                {
+                    Console.WriteLine(continuing);
+                }
+                else
+                {
+                    throw new EntryWrongException();
+                }
+            }
+            catch (EntryWrongException ewe)
+            {
+                Console.WriteLine(ewe.Message);
+                Console.WriteLine(continuing);
+            }
+            return false;
+        }
+
+
 
         private bool Phase4Victory()
         {
