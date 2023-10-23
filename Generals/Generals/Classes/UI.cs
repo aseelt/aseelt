@@ -299,8 +299,7 @@ namespace Generals.Classes
             } while (keepGoing);
             return true;
         }
-
-        //TODO fill these out
+         
         private bool MenuOption1Background()
         {
             Console.WriteLine("\nWelcome to the Game of the Generals!\nThe Game of the Generals, sometimes known as The Generals, is a Filipino board game invented\n" +
@@ -402,9 +401,7 @@ namespace Generals.Classes
                 Console.WriteLine("I didn't recognize that input. Let's continue with the game.");
             }
 
-            //string playerOne AskForStringEnteredCase("\nPlayer One, enter your army's name: ");
-            Console.Write("\nPlayer One, enter your army's name: ");
-            string playerOne = "PlayerOneAseel";
+            string playerOne = AskForStringEnteredCase("\nPlayer One, enter your army's name: ");
 
             string playerTwo = PlayerTwoSetup(playerOne);
             string field = BattlefieldName(playerOne, playerTwo);
@@ -434,9 +431,8 @@ namespace Generals.Classes
             bool keepGoingPlayerTwoName = true;
             do
             {
-                //string playerTwo AskForStringEnteredCase("\nPlayer Two, enter your army's name: ");
-                Console.Write("\nPlayer Two, enter your army's name: ");
-                playerTwo = "PlayerTwoBasil";
+                playerTwo = AskForStringEnteredCase("\nPlayer Two, enter your army's name: ");
+                
                 string playerOneLower = playerOne.ToLower();
                 string playerTwoLower = playerTwo.ToLower();
                 if (playerTwoLower == playerOneLower)
@@ -464,9 +460,8 @@ namespace Generals.Classes
             bool keepGoingBattlefield = true;
             do
             {
-                //string field AskForStringEnteredCase("\nWhere are your armies meeting? ");
-                Console.Write("\nWhere are your armies meeting? ");
-                field = "a";
+                field = AskForStringEnteredCase("\nWhere are your armies meeting? ");
+
                 string fieldLower = field.ToLower();
                 string playerOneLower = playerOne.ToLower();
                 string playerTwoLower = playerTwo.ToLower();
