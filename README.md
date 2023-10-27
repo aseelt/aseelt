@@ -17,8 +17,10 @@ Here are some ideas to get you started:
 
 Hello!
 
-I'm starting a course at TechElevator in Pittsburgh. I'm switching careers and am looking forward to my next challenge.
+I'm currently at TechElevator in Pittsburgh, a full stack coding bootcamp. I'm switching careers and am looking forward to my next challenge. My class is focused on C#/.NET; we are also covering SQL, web APIs, and the front end.
 
-More to come soon!
+I have one project that I am ready to share in a public repository (under aseelt/gameofthegenerals). Game of the Generals is based on the Filipino board game - it's a mix of Chess, Guess Who, and Rock, Paper, Scissors, with an element of fog of war thrown in. it's at an early stage but is playable.
+
+Thank you for visiting!
 
 -aseelt
