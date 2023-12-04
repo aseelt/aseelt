@@ -1,0 +1,51 @@
+TO DO:
+- Refresh database with data - figure out a controller that runs on an automated script
+- Update the instructions getter
+	Figure out how to get valid url vs redirects (redirects give search bar url)
+- Revisit the View controllers, common controller
+- full load
+- pagination for results going back to the website so you don't have to send everything
+	FOR ALL LIST RESULTS - including sets and parts
+- check for new sets and new parts:
+	do an all sets, do an all parts
+	then pull from my database for sets and parts
+	any that are not in my database, add to a list
+	then go get the list from the api
+
+
+
+
+Controllers
+validation that the table row is active/inactive should happen... in the controller? In the sql daos? both?
+login controller (all)
+	adds users
+	logs in
+user controller (me)
+	increase role
+	decrease role
+	inactivate
+	reactivate
+getdatafromapi controller (me)
+	build by five all
+		instructions taken care of automatically
+	then the other two for parts and sets(do this in order)
+getdatafromdb controller (me)
+	get data singular, by table (view controller?)
+	get data all, by table (view controller?)
+	get popular pieces
+	get popular sets
+	get popular colours
+		analytics stuff - optional
+userfunctionscontroller (users)
+	see total bricks
+	see what sets user has and quantity (ordered on entry)
+	see bricks breakdown (top 100?)
+	see colours breakdown (ordered)
+	add set - triggers 
+	remove set
+	give me a set... oof thats the complicated one
+	
+
+LAST:
+- Controller decoration - Add APIExplorerSettings(IgnoreApi = true) decoration on controllers you want publicly hidden
+			- Add Authorization for controllers

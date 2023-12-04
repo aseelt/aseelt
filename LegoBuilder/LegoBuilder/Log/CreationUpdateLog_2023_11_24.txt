@@ -1,0 +1,954 @@
+API Call | Set Parts | 10 parts for set number 100-1 were retrieved | 11/24/2023 3:04:58 PM
+--- END OF ACTION ---
+
+
+
+Sql Error | Set Parts | Something went wrong adding/updating  in the Set Parts table. The parameterized query '(@setNum nvarchar(4000))SELECT sets_parts_id, set_num, id, inv_p' expects the parameter '@setNum', which was not supplied. | 11/24/2023 8:51:42 PM
+--- END OF ACTION ---
+
+
+
+Sql Error | Set Parts | Something went wrong adding/updating  in the Set Parts table. The parameterized query '(@setNum nvarchar(4000))SELECT sets_parts_id, set_num, id, inv_p' expects the parameter '@setNum', which was not supplied. | 11/24/2023 9:04:17 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! 001-1 and all of its parts were added | 11/24/2023 9:51:14 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllSetPartsLoad | 001-1 was added to the database | 11/24/2023 9:51:25 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! 0012-1 and all of its parts were added | 11/24/2023 9:53:44 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllSetPartsLoad | 0012-1 was added to the database | 11/24/2023 9:53:47 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! 0013-1 and all of its parts were added | 11/24/2023 9:54:15 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllSetPartsLoad | 0013-1 was added to the database | 11/24/2023 9:54:43 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! 0014-1 and all of its parts were added | 11/24/2023 9:56:33 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllSetPartsLoad | 0014-1 was added to the database | 11/24/2023 9:56:50 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! 0015-1 and all of its parts were added | 11/24/2023 10:05:54 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllSetPartsLoad | 0015-1 was added to the database | 11/24/2023 10:05:58 PM
+--- END OF ACTION ---
+
+
+
+API Call |  | An http error occurred. Status code 404 Not Found | 11/24/2023 10:16:01 PM
+--- END OF ACTION ---
+
+
+
+API Call |  | An http error occurred. Status code 404 Not Found | 11/24/2023 10:17:21 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Sets | Success! 1 records were added/updated | 11/24/2023 10:19:55 PM
+Sets | 0012-1 | Updated
+--- END OF ACTION ---
+
+
+
+API Call | Set Parts | 1 parts for set number 0012-1 were retrieved | 11/24/2023 10:20:11 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Sets | Success! 1 records were added/updated | 11/24/2023 10:23:36 PM
+Sets | 0012-1 | Updated
+--- END OF ACTION ---
+
+
+
+API Call | Set Parts | 1 parts for set number 0012-1 were retrieved | 11/24/2023 10:23:47 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Sets | Zero records were actioned | 11/24/2023 10:27:01 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Sets | Partial Success! Some records may not be in the database - the program is weird. 0 records were added/updated | 11/24/2023 10:27:02 PM
+--- END OF ACTION ---
+
+
+
+API Call | Set Parts | 1 parts for set number 0012-1 were retrieved | 11/24/2023 10:27:10 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Set Parts | Success! Set Part Element , belonging to 0012-1 was updated in the SetParts table | 11/24/2023 10:28:22 PM
+--- END OF ACTION ---
+
+
+
+API Call | AllColours | 263 records were retrieved | 11/24/2023 11:50:26 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Colours | Success! 263 records were added/updated | 11/24/2023 11:50:31 PM
+Colours | -1 | Added
+Colours | 0 | Added
+Colours | 1 | Added
+Colours | 2 | Added
+Colours | 3 | Added
+Colours | 4 | Added
+Colours | 5 | Added
+Colours | 6 | Added
+Colours | 7 | Added
+Colours | 8 | Added
+Colours | 9 | Added
+Colours | 10 | Added
+Colours | 11 | Added
+Colours | 12 | Added
+Colours | 13 | Added
+Colours | 14 | Added
+Colours | 15 | Added
+Colours | 17 | Added
+Colours | 18 | Added
+Colours | 19 | Added
+Colours | 20 | Added
+Colours | 21 | Added
+Colours | 22 | Added
+Colours | 23 | Added
+Colours | 25 | Added
+Colours | 26 | Added
+Colours | 27 | Added
+Colours | 28 | Added
+Colours | 29 | Added
+Colours | 30 | Added
+Colours | 31 | Added
+Colours | 32 | Added
+Colours | 33 | Added
+Colours | 34 | Added
+Colours | 35 | Added
+Colours | 36 | Added
+Colours | 40 | Added
+Colours | 41 | Added
+Colours | 42 | Added
+Colours | 43 | Added
+Colours | 45 | Added
+Colours | 46 | Added
+Colours | 47 | Added
+Colours | 52 | Added
+Colours | 54 | Added
+Colours | 57 | Added
+Colours | 60 | Added
+Colours | 61 | Added
+Colours | 62 | Added
+Colours | 63 | Added
+Colours | 64 | Added
+Colours | 68 | Added
+Colours | 69 | Added
+Colours | 70 | Added
+Colours | 71 | Added
+Colours | 72 | Added
+Colours | 73 | Added
+Colours | 74 | Added
+Colours | 75 | Added
+Colours | 76 | Added
+Colours | 77 | Added
+Colours | 78 | Added
+Colours | 79 | Added
+Colours | 80 | Added
+Colours | 81 | Added
+Colours | 82 | Added
+Colours | 84 | Added
+Colours | 85 | Added
+Colours | 86 | Added
+Colours | 89 | Added
+Colours | 92 | Added
+Colours | 100 | Added
+Colours | 110 | Added
+Colours | 112 | Added
+Colours | 114 | Added
+Colours | 115 | Added
+Colours | 117 | Added
+Colours | 118 | Added
+Colours | 120 | Added
+Colours | 125 | Added
+Colours | 129 | Added
+Colours | 132 | Added
+Colours | 133 | Added
+Colours | 134 | Added
+Colours | 135 | Added
+Colours | 137 | Added
+Colours | 142 | Added
+Colours | 143 | Added
+Colours | 148 | Added
+Colours | 150 | Added
+Colours | 151 | Added
+Colours | 158 | Added
+Colours | 178 | Added
+Colours | 179 | Added
+Colours | 182 | Added
+Colours | 183 | Added
+Colours | 191 | Added
+Colours | 212 | Added
+Colours | 216 | Added
+Colours | 226 | Added
+Colours | 230 | Added
+Colours | 232 | Added
+Colours | 236 | Added
+Colours | 272 | Added
+Colours | 288 | Added
+Colours | 294 | Added
+Colours | 297 | Added
+Colours | 308 | Added
+Colours | 313 | Added
+Colours | 320 | Added
+Colours | 321 | Added
+Colours | 322 | Added
+Colours | 323 | Added
+Colours | 326 | Added
+Colours | 334 | Added
+Colours | 335 | Added
+Colours | 351 | Added
+Colours | 366 | Added
+Colours | 373 | Added
+Colours | 378 | Added
+Colours | 379 | Added
+Colours | 383 | Added
+Colours | 450 | Added
+Colours | 462 | Added
+Colours | 484 | Added
+Colours | 503 | Added
+Colours | 1000 | Added
+Colours | 1001 | Added
+Colours | 1002 | Added
+Colours | 1003 | Added
+Colours | 1004 | Added
+Colours | 1005 | Added
+Colours | 1006 | Added
+Colours | 1007 | Added
+Colours | 1008 | Added
+Colours | 1009 | Added
+Colours | 1010 | Added
+Colours | 1011 | Added
+Colours | 1012 | Added
+Colours | 1013 | Added
+Colours | 1014 | Added
+Colours | 1015 | Added
+Colours | 1016 | Added
+Colours | 1017 | Added
+Colours | 1018 | Added
+Colours | 1019 | Added
+Colours | 1020 | Added
+Colours | 1021 | Added
+Colours | 1022 | Added
+Colours | 1023 | Added
+Colours | 1024 | Added
+Colours | 1025 | Added
+Colours | 1026 | Added
+Colours | 1027 | Added
+Colours | 1028 | Added
+Colours | 1029 | Added
+Colours | 1030 | Added
+Colours | 1031 | Added
+Colours | 1032 | Added
+Colours | 1033 | Added
+Colours | 1034 | Added
+Colours | 1035 | Added
+Colours | 1036 | Added
+Colours | 1037 | Added
+Colours | 1038 | Added
+Colours | 1039 | Added
+Colours | 1040 | Added
+Colours | 1041 | Added
+Colours | 1042 | Added
+Colours | 1043 | Added
+Colours | 1044 | Added
+Colours | 1045 | Added
+Colours | 1046 | Added
+Colours | 1047 | Added
+Colours | 1048 | Added
+Colours | 1049 | Added
+Colours | 1050 | Added
+Colours | 1051 | Added
+Colours | 1052 | Added
+Colours | 1053 | Added
+Colours | 1054 | Added
+Colours | 1055 | Added
+Colours | 1056 | Added
+Colours | 1057 | Added
+Colours | 1058 | Added
+Colours | 1059 | Added
+Colours | 1060 | Added
+Colours | 1061 | Added
+Colours | 1062 | Added
+Colours | 1063 | Added
+Colours | 1064 | Added
+Colours | 1065 | Added
+Colours | 1066 | Added
+Colours | 1067 | Added
+Colours | 1068 | Added
+Colours | 1069 | Added
+Colours | 1070 | Added
+Colours | 1071 | Added
+Colours | 1072 | Added
+Colours | 1073 | Added
+Colours | 1074 | Added
+Colours | 1075 | Added
+Colours | 1076 | Added
+Colours | 1077 | Added
+Colours | 1078 | Added
+Colours | 1079 | Added
+Colours | 1080 | Added
+Colours | 1081 | Added
+Colours | 1082 | Added
+Colours | 1083 | Added
+Colours | 1084 | Added
+Colours | 1085 | Added
+Colours | 1086 | Added
+Colours | 1087 | Added
+Colours | 1088 | Added
+Colours | 1089 | Added
+Colours | 1090 | Added
+Colours | 1091 | Added
+Colours | 1092 | Added
+Colours | 1093 | Added
+Colours | 1094 | Added
+Colours | 1095 | Added
+Colours | 1096 | Added
+Colours | 1097 | Added
+Colours | 1098 | Added
+Colours | 1099 | Added
+Colours | 1100 | Added
+Colours | 1101 | Added
+Colours | 1102 | Added
+Colours | 1103 | Added
+Colours | 1104 | Added
+Colours | 1105 | Added
+Colours | 1106 | Added
+Colours | 1107 | Added
+Colours | 1108 | Added
+Colours | 1109 | Added
+Colours | 1110 | Added
+Colours | 1111 | Added
+Colours | 1112 | Added
+Colours | 1113 | Added
+Colours | 1114 | Added
+Colours | 1115 | Added
+Colours | 1116 | Added
+Colours | 1117 | Added
+Colours | 1118 | Added
+Colours | 1119 | Added
+Colours | 1120 | Added
+Colours | 1121 | Added
+Colours | 1122 | Added
+Colours | 1123 | Added
+Colours | 1124 | Added
+Colours | 1125 | Added
+Colours | 1126 | Added
+Colours | 1127 | Added
+Colours | 1128 | Added
+Colours | 1129 | Added
+Colours | 1130 | Added
+Colours | 1131 | Added
+Colours | 1132 | Added
+Colours | 1133 | Added
+Colours | 1134 | Added
+Colours | 1135 | Added
+Colours | 9999 | Added
+--- END OF ACTION ---
+
+
+
+API Call | AllPartCats | 66 records were retrieved | 11/24/2023 11:51:01 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | PartCatIds | Success! 66 records were added/updated | 11/24/2023 11:51:01 PM
+PartCatIds | 1 | Added
+PartCatIds | 3 | Added
+PartCatIds | 4 | Added
+PartCatIds | 5 | Added
+PartCatIds | 6 | Added
+PartCatIds | 7 | Added
+PartCatIds | 8 | Added
+PartCatIds | 9 | Added
+PartCatIds | 11 | Added
+PartCatIds | 12 | Added
+PartCatIds | 13 | Added
+PartCatIds | 14 | Added
+PartCatIds | 15 | Added
+PartCatIds | 16 | Added
+PartCatIds | 17 | Added
+PartCatIds | 18 | Added
+PartCatIds | 19 | Added
+PartCatIds | 20 | Added
+PartCatIds | 21 | Added
+PartCatIds | 22 | Added
+PartCatIds | 23 | Added
+PartCatIds | 24 | Added
+PartCatIds | 25 | Added
+PartCatIds | 26 | Added
+PartCatIds | 27 | Added
+PartCatIds | 28 | Added
+PartCatIds | 29 | Added
+PartCatIds | 30 | Added
+PartCatIds | 31 | Added
+PartCatIds | 32 | Added
+PartCatIds | 33 | Added
+PartCatIds | 34 | Added
+PartCatIds | 35 | Added
+PartCatIds | 36 | Added
+PartCatIds | 37 | Added
+PartCatIds | 38 | Added
+PartCatIds | 39 | Added
+PartCatIds | 40 | Added
+PartCatIds | 41 | Added
+PartCatIds | 42 | Added
+PartCatIds | 43 | Added
+PartCatIds | 44 | Added
+PartCatIds | 45 | Added
+PartCatIds | 46 | Added
+PartCatIds | 47 | Added
+PartCatIds | 48 | Added
+PartCatIds | 49 | Added
+PartCatIds | 50 | Added
+PartCatIds | 51 | Added
+PartCatIds | 52 | Added
+PartCatIds | 53 | Added
+PartCatIds | 54 | Added
+PartCatIds | 55 | Added
+PartCatIds | 56 | Added
+PartCatIds | 57 | Added
+PartCatIds | 58 | Added
+PartCatIds | 59 | Added
+PartCatIds | 60 | Added
+PartCatIds | 61 | Added
+PartCatIds | 62 | Added
+PartCatIds | 63 | Added
+PartCatIds | 64 | Added
+PartCatIds | 65 | Added
+PartCatIds | 66 | Added
+PartCatIds | 67 | Added
+PartCatIds | 68 | Added
+--- END OF ACTION ---
+
+
+
+API Call | AllThemes | 468 records were retrieved | 11/24/2023 11:51:15 PM
+--- END OF ACTION ---
+
+
+
+Created & Updated | Themes | Success! 468 records were added/updated | 11/24/2023 11:51:16 PM
+Themes | 1 | Added
+Themes | 3 | Added
+Themes | 4 | Added
+Themes | 16 | Added
+Themes | 17 | Added
+Themes | 18 | Added
+Themes | 19 | Added
+Themes | 20 | Added
+Themes | 21 | Added
+Themes | 22 | Added
+Themes | 23 | Added
+Themes | 34 | Added
+Themes | 35 | Added
+Themes | 50 | Added
+Themes | 51 | Added
+Themes | 52 | Added
+Themes | 53 | Added
+Themes | 54 | Added
+Themes | 55 | Added
+Themes | 56 | Added
+Themes | 57 | Added
+Themes | 58 | Added
+Themes | 59 | Added
+Themes | 60 | Added
+Themes | 61 | Added
+Themes | 63 | Added
+Themes | 64 | Added
+Themes | 65 | Added
+Themes | 66 | Added
+Themes | 67 | Added
+Themes | 86 | Added
+Themes | 87 | Added
+Themes | 88 | Added
+Themes | 89 | Added
+Themes | 90 | Added
+Themes | 91 | Added
+Themes | 92 | Added
+Themes | 93 | Added
+Themes | 94 | Added
+Themes | 104 | Added
+Themes | 105 | Added
+Themes | 106 | Added
+Themes | 112 | Added
+Themes | 114 | Added
+Themes | 118 | Added
+Themes | 122 | Added
+Themes | 123 | Added
+Themes | 126 | Added
+Themes | 127 | Added
+Themes | 128 | Added
+Themes | 129 | Added
+Themes | 130 | Added
+Themes | 131 | Added
+Themes | 132 | Added
+Themes | 133 | Added
+Themes | 134 | Added
+Themes | 135 | Added
+Themes | 136 | Added
+Themes | 137 | Added
+Themes | 138 | Added
+Themes | 139 | Added
+Themes | 140 | Added
+Themes | 141 | Added
+Themes | 142 | Added
+Themes | 143 | Added
+Themes | 144 | Added
+Themes | 145 | Added
+Themes | 146 | Added
+Themes | 147 | Added
+Themes | 148 | Added
+Themes | 153 | Added
+Themes | 154 | Added
+Themes | 155 | Added
+Themes | 156 | Added
+Themes | 157 | Added
+Themes | 158 | Added
+Themes | 171 | Added
+Themes | 186 | Added
+Themes | 187 | Added
+Themes | 188 | Added
+Themes | 189 | Added
+Themes | 190 | Added
+Themes | 191 | Added
+Themes | 193 | Added
+Themes | 194 | Added
+Themes | 195 | Added
+Themes | 196 | Added
+Themes | 197 | Added
+Themes | 198 | Added
+Themes | 199 | Added
+Themes | 201 | Added
+Themes | 203 | Added
+Themes | 204 | Added
+Themes | 206 | Added
+Themes | 207 | Added
+Themes | 208 | Added
+Themes | 209 | Added
+Themes | 210 | Added
+Themes | 211 | Added
+Themes | 212 | Added
+Themes | 213 | Added
+Themes | 214 | Added
+Themes | 215 | Added
+Themes | 216 | Added
+Themes | 227 | Added
+Themes | 228 | Added
+Themes | 229 | Added
+Themes | 230 | Added
+Themes | 231 | Added
+Themes | 232 | Added
+Themes | 233 | Added
+Themes | 234 | Added
+Themes | 235 | Added
+Themes | 236 | Added
+Themes | 240 | Added
+Themes | 241 | Added
+Themes | 246 | Added
+Themes | 252 | Added
+Themes | 253 | Added
+Themes | 254 | Added
+Themes | 255 | Added
+Themes | 256 | Added
+Themes | 257 | Added
+Themes | 258 | Added
+Themes | 259 | Added
+Themes | 260 | Added
+Themes | 261 | Added
+Themes | 262 | Added
+Themes | 263 | Added
+Themes | 264 | Added
+Themes | 269 | Added
+Themes | 270 | Added
+Themes | 271 | Added
+Themes | 272 | Added
+Themes | 273 | Added
+Themes | 274 | Added
+Themes | 275 | Added
+Themes | 276 | Added
+Themes | 277 | Added
+Themes | 278 | Added
+Themes | 279 | Added
+Themes | 280 | Added
+Themes | 287 | Added
+Themes | 296 | Added
+Themes | 297 | Added
+Themes | 298 | Added
+Themes | 299 | Added
+Themes | 300 | Added
+Themes | 301 | Added
+Themes | 302 | Added
+Themes | 303 | Added
+Themes | 304 | Added
+Themes | 305 | Added
+Themes | 306 | Added
+Themes | 307 | Added
+Themes | 308 | Added
+Themes | 309 | Added
+Themes | 310 | Added
+Themes | 311 | Added
+Themes | 312 | Added
+Themes | 313 | Added
+Themes | 315 | Added
+Themes | 317 | Added
+Themes | 318 | Added
+Themes | 324 | Added
+Themes | 341 | Added
+Themes | 360 | Added
+Themes | 363 | Added
+Themes | 364 | Added
+Themes | 365 | Added
+Themes | 366 | Added
+Themes | 367 | Added
+Themes | 368 | Added
+Themes | 369 | Added
+Themes | 371 | Added
+Themes | 372 | Added
+Themes | 373 | Added
+Themes | 384 | Added
+Themes | 385 | Added
+Themes | 386 | Added
+Themes | 387 | Added
+Themes | 388 | Added
+Themes | 389 | Added
+Themes | 390 | Added
+Themes | 397 | Added
+Themes | 398 | Added
+Themes | 399 | Added
+Themes | 400 | Added
+Themes | 401 | Added
+Themes | 403 | Added
+Themes | 404 | Added
+Themes | 405 | Added
+Themes | 406 | Added
+Themes | 407 | Added
+Themes | 408 | Added
+Themes | 409 | Added
+Themes | 410 | Added
+Themes | 411 | Added
+Themes | 412 | Added
+Themes | 413 | Added
+Themes | 414 | Added
+Themes | 415 | Added
+Themes | 416 | Added
+Themes | 417 | Added
+Themes | 418 | Added
+Themes | 419 | Added
+Themes | 420 | Added
+Themes | 421 | Added
+Themes | 422 | Added
+Themes | 423 | Added
+Themes | 424 | Added
+Themes | 425 | Added
+Themes | 432 | Added
+Themes | 433 | Added
+Themes | 434 | Added
+Themes | 435 | Added
+Themes | 437 | Added
+Themes | 438 | Added
+Themes | 439 | Added
+Themes | 440 | Added
+Themes | 441 | Added
+Themes | 442 | Added
+Themes | 443 | Added
+Themes | 448 | Added
+Themes | 453 | Added
+Themes | 456 | Added
+Themes | 458 | Added
+Themes | 459 | Added
+Themes | 460 | Added
+Themes | 461 | Added
+Themes | 462 | Added
+Themes | 463 | Added
+Themes | 464 | Added
+Themes | 465 | Added
+Themes | 467 | Added
+Themes | 469 | Added
+Themes | 470 | Added
+Themes | 471 | Added
+Themes | 472 | Added
+Themes | 473 | Added
+Themes | 474 | Added
+Themes | 475 | Added
+Themes | 478 | Added
+Themes | 480 | Added
+Themes | 481 | Added
+Themes | 494 | Added
+Themes | 497 | Added
+Themes | 498 | Added
+Themes | 500 | Added
+Themes | 501 | Added
+Themes | 502 | Added
+Themes | 503 | Added
+Themes | 504 | Added
+Themes | 505 | Added
+Themes | 506 | Added
+Themes | 507 | Added
+Themes | 509 | Added
+Themes | 510 | Added
+Themes | 511 | Added
+Themes | 512 | Added
+Themes | 513 | Added
+Themes | 514 | Added
+Themes | 515 | Added
+Themes | 516 | Added
+Themes | 517 | Added
+Themes | 518 | Added
+Themes | 519 | Added
+Themes | 520 | Added
+Themes | 521 | Added
+Themes | 523 | Added
+Themes | 524 | Added
+Themes | 525 | Added
+Themes | 526 | Added
+Themes | 527 | Added
+Themes | 528 | Added
+Themes | 529 | Added
+Themes | 530 | Added
+Themes | 531 | Added
+Themes | 532 | Added
+Themes | 533 | Added
+Themes | 534 | Added
+Themes | 535 | Added
+Themes | 536 | Added
+Themes | 537 | Added
+Themes | 538 | Added
+Themes | 539 | Added
+Themes | 540 | Added
+Themes | 541 | Added
+Themes | 542 | Added
+Themes | 543 | Added
+Themes | 544 | Added
+Themes | 545 | Added
+Themes | 546 | Added
+Themes | 547 | Added
+Themes | 548 | Added
+Themes | 549 | Added
+Themes | 550 | Added
+Themes | 551 | Added
+Themes | 552 | Added
+Themes | 553 | Added
+Themes | 554 | Added
+Themes | 555 | Added
+Themes | 556 | Added
+Themes | 557 | Added
+Themes | 558 | Added
+Themes | 559 | Added
+Themes | 560 | Added
+Themes | 561 | Added
+Themes | 562 | Added
+Themes | 566 | Added
+Themes | 570 | Added
+Themes | 571 | Added
+Themes | 572 | Added
+Themes | 573 | Added
+Themes | 575 | Added
+Themes | 576 | Added
+Themes | 577 | Added
+Themes | 578 | Added
+Themes | 579 | Added
+Themes | 580 | Added
+Themes | 590 | Added
+Themes | 591 | Added
+Themes | 592 | Added
+Themes | 593 | Added
+Themes | 595 | Added
+Themes | 596 | Added
+Themes | 597 | Added
+Themes | 598 | Added
+Themes | 599 | Added
+Themes | 600 | Added
+Themes | 601 | Added
+Themes | 602 | Added
+Themes | 603 | Added
+Themes | 604 | Added
+Themes | 605 | Added
+Themes | 606 | Added
+Themes | 607 | Added
+Themes | 608 | Added
+Themes | 609 | Added
+Themes | 610 | Added
+Themes | 611 | Added
+Themes | 614 | Added
+Themes | 615 | Added
+Themes | 616 | Added
+Themes | 617 | Added
+Themes | 618 | Added
+Themes | 619 | Added
+Themes | 620 | Added
+Themes | 621 | Added
+Themes | 622 | Added
+Themes | 625 | Added
+Themes | 626 | Added
+Themes | 627 | Added
+Themes | 628 | Added
+Themes | 629 | Added
+Themes | 630 | Added
+Themes | 631 | Added
+Themes | 632 | Added
+Themes | 633 | Added
+Themes | 634 | Added
+Themes | 635 | Added
+Themes | 636 | Added
+Themes | 638 | Added
+Themes | 639 | Added
+Themes | 640 | Added
+Themes | 641 | Added
+Themes | 646 | Added
+Themes | 647 | Added
+Themes | 648 | Added
+Themes | 650 | Added
+Themes | 651 | Added
+Themes | 652 | Added
+Themes | 653 | Added
+Themes | 654 | Added
+Themes | 655 | Added
+Themes | 656 | Added
+Themes | 657 | Added
+Themes | 658 | Added
+Themes | 659 | Added
+Themes | 660 | Added
+Themes | 661 | Added
+Themes | 662 | Added
+Themes | 663 | Added
+Themes | 664 | Added
+Themes | 665 | Added
+Themes | 666 | Added
+Themes | 667 | Added
+Themes | 668 | Added
+Themes | 669 | Added
+Themes | 670 | Added
+Themes | 671 | Added
+Themes | 672 | Added
+Themes | 673 | Added
+Themes | 674 | Added
+Themes | 675 | Added
+Themes | 676 | Added
+Themes | 677 | Added
+Themes | 679 | Added
+Themes | 680 | Added
+Themes | 681 | Added
+Themes | 682 | Added
+Themes | 683 | Added
+Themes | 684 | Added
+Themes | 685 | Added
+Themes | 686 | Added
+Themes | 687 | Added
+Themes | 688 | Added
+Themes | 689 | Added
+Themes | 690 | Added
+Themes | 691 | Added
+Themes | 692 | Added
+Themes | 693 | Added
+Themes | 694 | Added
+Themes | 695 | Added
+Themes | 696 | Added
+Themes | 697 | Added
+Themes | 698 | Added
+Themes | 699 | Added
+Themes | 700 | Added
+Themes | 701 | Added
+Themes | 702 | Added
+Themes | 703 | Added
+Themes | 704 | Added
+Themes | 705 | Added
+Themes | 706 | Added
+Themes | 707 | Added
+Themes | 708 | Added
+Themes | 709 | Added
+Themes | 710 | Added
+Themes | 711 | Added
+Themes | 712 | Added
+Themes | 713 | Added
+Themes | 714 | Added
+Themes | 715 | Added
+Themes | 716 | Added
+Themes | 717 | Added
+Themes | 718 | Added
+Themes | 719 | Added
+Themes | 720 | Added
+Themes | 721 | Added
+Themes | 722 | Added
+Themes | 724 | Added
+Themes | 725 | Added
+Themes | 728 | Added
+Themes | 729 | Added
+Themes | 730 | Added
+Themes | 731 | Added
+Themes | 732 | Added
+Themes | 733 | Added
+Themes | 734 | Added
+Themes | 735 | Added
+Themes | 736 | Added
+Themes | 737 | Added
+Themes | 738 | Added
+Themes | 739 | Added
+Themes | 740 | Added
+Themes | 741 | Added
+Themes | 742 | Added
+Themes | 743 | Added
+Themes | 744 | Added
+Themes | 745 | Added
+Themes | 746 | Added
+Themes | 747 | Added
+Themes | 748 | Added
+Themes | 749 | Added
+Themes | 750 | Added
+Themes | 751 | Added
+Themes | 752 | Added
+--- END OF ACTION ---
+
+
+
+API Call | AllSets | 21988 records were retrieved | 11/24/2023 11:56:41 PM
+--- END OF ACTION ---
+
+
+
+Sql Error | Sets | 0 records were actioned before failure. Violation of UNIQUE KEY constraint 'UQ_set_num_s'. Cannot insert duplicate key in object 'dbo.sets'. The duplicate key value is (001-1). | 11/24/2023 11:56:58 PM
+--- END OF ACTION ---
+
+
+
