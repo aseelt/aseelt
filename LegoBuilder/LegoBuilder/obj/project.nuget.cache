@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XhlLNMWS3vgD+tuV6pZL4jf2t47FnL9vY9P49fiRsbOzg1rmVskyu6bZmSeeQ11PMv+a4xRYRsbF2aaxjf3mjg==",
+  "dgSpecHash": "E+8R2ylvJyMBQ/RYeVUR1wr4BKl9patd/Tub8pS5hQ1r4xZ6y0S1PqfIw9QI0LtzKR5SQ2geMC+XPniZt/tpgg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Student\\workspace\\side-project-personal-GitHub\\private\\LegoBuilder\\LegoBuilder\\LegoBuilder.csproj",
+  "projectFilePath": "C:\\Users\\Student\\workspace\\side-project-personal-GitHub\\aseelt\\LegoBuilder\\LegoBuilder\\LegoBuilder.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Student\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.20\\microsoft.aspnetcore.authentication.jwtbearer.6.0.20.nupkg.sha512",
     "C:\\Users\\Student\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
