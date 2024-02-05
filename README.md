@@ -17,11 +17,11 @@ Here are some ideas to get you started:
 
 Hello!
 
-I'm currently at TechElevator in Pittsburgh, a full stack coding bootcamp. I'm switching careers and am looking forward to my next challenge. My class is focused on C#/.NET; we are also covering SQL, web APIs, and the front end.
+I have recently graduated from Tech Elevator in Pittsburgh, a full stack coding bootcamp. My class is focused on C#/.NET; we are also covering SQL, web APIs, and a Vue.js front end. I'm switching careers and am looking forward to my next challenge. 
+
+Please visit my showcase site: www.whatcanibuild.net. You tell us what Lego sets you have, and we'll tell you what other sets you might be able to build. You can even choose specific themes and get the results delivered to your email inbox on a day of your choosing.
 
 I have one project that I am ready to share in this repository. Game of the Generals is based on the Filipino board game - it's a mix of Chess, Guess Who, and Rock, Paper, Scissors, with an element of fog of war thrown in. It's at an early stage but is playable.
-
-I've also included my Lego - What Can I Build application. It's still in an early stage - the databases are built and can call an external API and the UI can display a randomized Lego set and its parts.
 
 Thank you for visiting!
 
